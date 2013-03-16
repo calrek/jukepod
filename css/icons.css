@@ -1,0 +1,165 @@
+.icon-new-user {
+	background-image:url(img/silk/icons/user_add.png) !important;
+}		
+.icon-extras {
+	background-image:url(img/silk/icons/application_view_tile.png) !important;
+}		
+
+.icon-filter {
+	background-image:url(img/silk/icons/page_white_magnify.png) !important;
+}	
+
+.icon-select-all {
+	background-image:url(img/silk/icons/arrow_out.png) !important;
+}
+
+.icon-view {
+	background-image:url(img/silk/icons/application_view_columns.png) !important;
+}
+.icon-left {
+	background-image:url(img/silk/icons/arrow_left.png) !important;
+}
+
+.icon-right {
+	background-image:url(img/silk/icons/arrow_right.png) !important;
+}
+
+.icon-youtube {
+	background-image:url(img/silk/icons/television.png) !important;
+}
+
+.icon-lyrics {
+	background-image:url(img/silk/icons/page_white_text.png) !important;
+}
+
+.icon-accept {
+	background-image:url(img/silk/icons/accept.png) !important;
+}
+
+.icon-cancel {
+	background-image:url(img/silk/icons/cancel.png) !important;
+}
+
+.icon-music {
+	background-image:url(img/silk/icons/music.png) !important;
+}
+
+.icon-playlist {
+	background-image:url(img/silk/icons/sound.png) !important;
+}
+
+.icon-cd-edit {
+	background-image:url(img/silk/icons/cd_edit.png) !important;
+}
+
+.icon-album {
+	background-image:url(img/silk/icons/cd.png) !important;
+}
+
+.icon-add-to-playlist {
+	background-image:url(img/silk/icons/sound_add.png) !important;
+}
+
+.icon-zoom {
+	background-image:url(img/silk/icons/magnifier.png) !important;
+}
+
+.icon-artist-go {
+	background-image:url(img/silk/icons/user_go.png) !important;
+}
+
+.icon-album-go {
+	background-image:url(img/silk/icons/cd_go.png) !important;
+}		
+
+.icon-artist {
+	background-image:url(img/silk/icons/user.png) !important;
+}
+
+.icon-folder {
+	background-image:url(extjs/resources/images/<?=$skin_image_folder;?>/tree/folder.gif) !important;
+}
+
+.icon-new-update {
+	background-image:url(img/silk/icons/folder_star.png) !important;
+}
+
+.icon-full-update {
+	background-image:url(img/silk/icons/arrow_refresh.png) !important;
+}
+
+.icon-edit {
+	background-image:url(img/silk/icons/pencil.png) !important;
+}
+
+.icon-add {
+	background-image:url(img/silk/icons/add.png) !important;
+}
+
+.icon-delete {
+	background-image:url(img/silk/icons/delete.png) !important;
+}
+
+.icon-pause {
+	background-image:url(img/silk/icons/control_pause_blue.png) !important;
+}		
+
+.icon-play {
+	background-image:url(img/silk/icons/control_play_blue.png) !important;
+}		
+
+.icon-stop {
+	background-image:url(img/silk/icons/control_stop_blue.png) !important;
+}		
+
+.icon-previous {
+	background-image:url(img/silk/icons/control_start_blue.png) !important;
+}		
+
+.icon-shuffle {
+	background-image:url(img/silk/icons/arrow_switch.png) !important;
+}
+
+.icon-undock {
+	background-image:url(img/silk/icons/application_side_contract.png) !important;
+}
+
+.icon-next {
+	background-image:url(img/silk/icons/control_end_blue.png) !important;
+}		
+
+.icon-download {
+	background-image:url(img/silk/icons/disk.png) !important;
+}		
+
+.icon-fbshare {
+	background-image:url(img/silk/icons/fbshare.png) !important;
+}
+.test .x-dd-drop-icon {
+	background-image:url(img/silk/icons/pencil.png) !important;	
+}
+
+.icon-go-to-folder {
+	background-image:url(img/silk/icons/folder_go.png) !important;
+}
+
+.icon-clear-playlist {
+	background-image:url(img/silk/icons/lightning.png) !important;
+}
+
+.icon-playlist-menu {
+	background-image:url(img/silk/icons/wrench.png) !important;
+}
+
+.rating-selected {
+	background: transparent url(img/star.png) repeat-x left center;
+	cursor: pointer;
+}
+.rating-unselected {
+	background: transparent url(img/star_fade.png) repeat-x left center;
+	cursor: pointer;
+}
+
+.icon-clear-cache {
+	background-image:url(img/silk/icons/bin_empty.png) !important;
+}

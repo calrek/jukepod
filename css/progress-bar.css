@@ -1,0 +1,77 @@
+/*
+ * Ext JS Library 2.2
+ * Copyright(c) 2006-2008, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://extjs.com/license
+ */
+
+.read_dir .container
+{
+	clear: left;
+	height: 91px;
+}
+
+.read_album .container
+{
+	clear: left;
+	height: 20px;
+}
+
+.read_dir .frame_container,
+.read_album .frame_container
+{
+	clear: left;
+	padding: 5px;
+}
+
+.read_dir .progress_row,
+.read_album .progress_row
+{
+	clear: left;
+}
+
+.read_dir .progress_row .label,
+.read_album .progress_row .label
+{
+	float: left;
+	width: 120px;
+	padding: 5px;
+}
+
+.read_dir .progress_row .pb,
+.read_album .progress_row .pb
+{
+	float: left;
+	padding: 5px;
+}
+	
+.read_dir #iframeID,
+.read_album #iframeID
+{
+	width: 428px;
+}
+
+.x-progress-wrap.left-align .x-progress-text {
+	text-align:left;
+}
+.x-progress-wrap.custom {
+	    height:17px;
+	    border:1px solid #686868;
+	    overflow:hidden;
+	    padding:0 2px;
+}
+.ext-ie .x-progress-wrap.custom {
+	height:19px;
+}
+.custom .x-progress-inner {
+	    height:17px;
+	    background: #fff;
+}
+.custom .x-progress-bar {
+	    height:15px;
+	    background:transparent url(images/custom-bar.gif) repeat-x 0 0;
+	    border-top:1px solid #BEBEBE;
+	    border-bottom:1px solid #EFEFEF;
+	    border-right:0;
+}
