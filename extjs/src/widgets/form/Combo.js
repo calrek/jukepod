@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.form.ComboBox
  * @extends Ext.form.TriggerField
@@ -122,7 +133,7 @@ Ext.form.ComboBox = Ext.extend(Ext.form.TriggerField, {
     defaultAutoCreate : {tag: "input", type: "text", size: "24", autocomplete: "off"},
     /**
      * @cfg {Number} listWidth The width (used as a parameter to {@link Ext.Element#setWidth}) of the dropdown
-     * list (defaults to the width of the ComboBox field).  See also <tt>{@link #minListWidth}
+     * list (defaults to the width of the ComboBox field).  See also <tt>{@link #minListWidth}</tt>
      */
     /**
      * @cfg {String} displayField The underlying {@link Ext.data.Field#name data field name} to bind to this
@@ -146,16 +157,11 @@ Ext.form.ComboBox = Ext.extend(Ext.form.TriggerField, {
      * @cfg {String} hiddenName If specified, a hidden form field with this name is dynamically generated to store the
      * field's data value (defaults to the underlying DOM element's name). Required for the combo's value to automatically
      * post during a form submission.  See also {@link #valueField}.
-     * <p><b>Note</b>: the hidden field's id will also default to this name if {@link #hiddenId} is not specified.
-     * The ComboBox {@link Ext.Component#id id} and the <tt>{@link #hiddenId}</tt> <b>should be different</b>, since
-     * no two DOM nodes should share the same id.  So, if the ComboBox <tt>{@link Ext.form.Field#name name}</tt> and
-     * <tt>hiddenName</tt> are the same, you should specify a unique <tt>{@link #hiddenId}</tt>.</p>
      */
     /**
      * @cfg {String} hiddenId If <tt>{@link #hiddenName}</tt> is specified, <tt>hiddenId</tt> can also be provided
-     * to give the hidden field a unique id (defaults to the <tt>{@link #hiddenName}</tt>).  The <tt>hiddenId</tt>
-     * and combo {@link Ext.Component#id id} should be different, since no two DOM
-     * nodes should share the same id.
+     * to give the hidden field a unique id.  The <tt>hiddenId</tt> and combo {@link Ext.Component#id id} should be
+     * different, since no two DOM nodes should share the same id.
      */
     /**
      * @cfg {String} hiddenValue Sets the initial value of the hidden field if {@link #hiddenName} is
@@ -444,7 +450,7 @@ var combo = new Ext.form.ComboBox({
                     d.push([value, o.text]);
                 }
                 this.store = new Ext.data.ArrayStore({
-                    'id': 0,
+                    idIndex: 0,
                     fields: ['value', 'text'],
                     data : d,
                     autoDestroy: true
@@ -491,7 +497,7 @@ var combo = new Ext.form.ComboBox({
         Ext.form.ComboBox.superclass.onRender.call(this, ct, position);
         if(this.hiddenName){
             this.hiddenField = this.el.insertSibling({tag:'input', type:'hidden', name: this.hiddenName,
-                    id: (this.hiddenId||this.hiddenName)}, 'before', true);
+                    id: (this.hiddenId || Ext.id())}, 'before', true);
 
         }
         if(Ext.isGecko){
@@ -525,23 +531,27 @@ var combo = new Ext.form.ComboBox({
         return zindex;
     },
 
+    getZIndex : function(listParent){
+        listParent = listParent || Ext.getDom(this.getListParent() || Ext.getBody());
+        var zindex = parseInt(Ext.fly(listParent).getStyle('z-index'), 10);
+        if(!zindex){
+            zindex = this.getParentZIndex();
+        }
+        return (zindex || 12000) + 5;
+    },
+
     // private
     initList : function(){
         if(!this.list){
             var cls = 'x-combo-list',
-                listParent = Ext.getDom(this.getListParent() || Ext.getBody()),
-                zindex = parseInt(Ext.fly(listParent).getStyle('z-index'), 10);
-
-            if (!zindex) {
-                zindex = this.getParentZIndex();
-            }
+                listParent = Ext.getDom(this.getListParent() || Ext.getBody());
 
             this.list = new Ext.Layer({
                 parentEl: listParent,
                 shadow: this.shadow,
                 cls: [cls, this.listClass].join(' '),
                 constrain:false,
-                zindex: (zindex || 12000) + 5
+                zindex: this.getZIndex(listParent)
             });
 
             var lw = this.listWidth || Math.max(this.wrap.getWidth(), this.minListWidth);
@@ -733,10 +743,10 @@ var menu = new Ext.menu.Menu({
     },
 
     reset : function(){
-        Ext.form.ComboBox.superclass.reset.call(this);
         if(this.clearFilterOnReset && this.mode == 'local'){
             this.store.clearFilter();
         }
+        Ext.form.ComboBox.superclass.reset.call(this);
     },
 
     // private
@@ -798,7 +808,7 @@ myCombo.keyNav.tab = function() {   // Override TAB handling function
                 if(hname == 'down' || this.scope.isExpanded()){
                     // this MUST be called before ComboBox#fireKey()
                     var relay = Ext.KeyNav.prototype.doRelay.apply(this, arguments);
-                    if(!Ext.isIE && Ext.EventManager.useKeydown){
+                    if((((Ext.isIE9 && Ext.isStrict) || Ext.isIE10p) || !Ext.isIE) && Ext.EventManager.useKeydown){
                         // call Combo#fireKey() for browsers which use keydown event (except IE)
                         this.scope.fireKey(e);
                     }
@@ -936,10 +946,16 @@ myCombo.keyNav.tab = function() {   // Override TAB handling function
     },
 
     // private
-    assertValue  : function(){
+    assertValue : function(){
         var val = this.getRawValue(),
-            rec = this.findRecord(this.displayField, val);
+            rec;
 
+        if(this.valueField && Ext.isDefined(this.value)){
+            rec = this.findRecord(this.valueField, this.value);
+        }
+        if(!rec || rec.get(this.displayField) != val){
+            rec = this.findRecord(this.displayField, val);
+        }
         if(!rec && this.forceSelection){
             if(val.length > 0 && val != this.emptyText){
                 this.el.dom.value = Ext.value(this.lastSelectionText, '');
@@ -948,11 +964,11 @@ myCombo.keyNav.tab = function() {   // Override TAB handling function
                 this.clearValue();
             }
         }else{
-            if(rec){
+            if(rec && this.valueField){
                 // onSelect may have already set the value and by doing so
                 // set the display field properly.  Let's not wipe out the
                 // valueField here by just sending the displayField.
-                if (val == rec.get(this.displayField) && this.value == rec.get(this.valueField)){
+                if (this.value == val){
                     return;
                 }
                 val = rec.get(this.valueField || this.displayField);
@@ -1244,13 +1260,13 @@ myCombo.keyNav.tab = function() {   // Override TAB handling function
 
     // private
     getParams : function(q){
-        var p = {};
-        //p[this.queryParam] = q;
+        var params = {},
+            paramNames = this.store.paramNames;
         if(this.pageSize){
-            p.start = 0;
-            p.limit = this.pageSize;
+            params[paramNames.start] = 0;
+            params[paramNames.limit] = this.pageSize;
         }
-        return p;
+        return params;
     },
 
     /**
@@ -1298,14 +1314,7 @@ myCombo.keyNav.tab = function() {   // Override TAB handling function
         this.list.alignTo.apply(this.list, [this.el].concat(this.listAlign));
 
         // zindex can change, re-check it and set it if necessary
-        var listParent = Ext.getDom(this.getListParent() || Ext.getBody()),
-            zindex = parseInt(Ext.fly(listParent).getStyle('z-index') ,10);
-        if (!zindex){
-            zindex = this.getParentZIndex();
-        }
-        if (zindex) {
-            this.list.setZIndex(zindex + 5);
-        }
+        this.list.setZIndex(this.getZIndex());
         this.list.show();
         if(Ext.isGecko2){
             this.innerList.setOverflow('auto'); // necessary for FF 2.0/Mac

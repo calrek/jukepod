@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.Panel
  * @extends Ext.Container
@@ -95,7 +106,7 @@ new Ext.Panel({
     },
     footerCfg: {
         tag: 'h2',
-        cls: 'x-panel-footer'        // same as the Default class
+        cls: 'x-panel-footer',        // same as the Default class
         html: 'footer html'
     },
     footerCssClass: 'custom-footer', // additional css class, see {@link Ext.element#addClass addClass}
@@ -707,8 +718,8 @@ new Ext.Panel({
              * @event iconchange
              * Fires after the Panel icon class has been {@link #iconCls set} or {@link #setIconClass changed}.
              * @param {Ext.Panel} p the Panel which has had its {@link #iconCls icon class} changed.
-             * @param {String} The new icon class.
-             * @param {String} The old icon class.
+             * @param {String} newIcon The new icon class.
+             * @param {String} oldIcon The old icon class.
              */
             'iconchange',
             /**
@@ -1071,7 +1082,7 @@ new Ext.Panel({
                     var hdspan = hd.child('span.' + this.headerTextCls);
                     if (hdspan) {
                         Ext.DomHelper.insertBefore(hdspan.dom, {
-                            tag:'img', src: Ext.BLANK_IMAGE_URL, cls:'x-panel-inline-icon '+this.iconCls
+                            tag:'img', alt: '', src: Ext.BLANK_IMAGE_URL, cls:'x-panel-inline-icon '+this.iconCls
                         });
                     }
                  }
@@ -1304,7 +1315,7 @@ new Ext.Panel({
          * an instance of {@link Ext.dd.DragSource} which handles dragging the Panel.</p>
          * The developer must provide implementations of the abstract methods of {@link Ext.dd.DragSource}
          * in order to supply behaviour for each stage of the drag/drop process. See {@link #draggable}.
-         * @type Ext.dd.DragSource.
+         * @type Ext.dd.DragSource
          * @property dd
          */
         this.dd = new Ext.Panel.DD(this, Ext.isBoolean(this.draggable) ? null : this.draggable);
@@ -1494,7 +1505,7 @@ new Ext.Panel({
                     if(this.bottomToolbar){
                         this.bottomToolbar.setSize(w);
                         // The bbar does not move on resize without this.
-                        if (Ext.isIE) {
+                        if (Ext.isIE9m) {
                             this.bbar.setStyle('position', 'static');
                             this.bbar.setStyle('position', '');
                         }
@@ -1503,7 +1514,7 @@ new Ext.Panel({
                 if(this.footer){
                     this.footer.setWidth(w);
                     if(this.fbar){
-                        this.fbar.setSize(Ext.isIE ? (w - this.footer.getFrameWidth('lr')) : 'auto');
+                        this.fbar.setSize(Ext.isIE9m ? (w - this.footer.getFrameWidth('lr')) : 'auto');
                     }
                 }
 
@@ -1590,26 +1601,17 @@ new Ext.Panel({
      * @return {Number} The frame height
      */
     getFrameHeight : function() {
-        var h = Math.max(0, this.getHeight() - this.body.getHeight());
+        var h  = this.el.getFrameWidth('tb') + this.bwrap.getFrameWidth('tb');
+        h += (this.tbar ? this.tbar.getHeight() : 0) +
+             (this.bbar ? this.bbar.getHeight() : 0);
 
-        if (isNaN(h)) {
-            h = 0;
+        if(this.frame){
+            h += this.el.dom.firstChild.offsetHeight + this.ft.dom.offsetHeight + this.mc.getFrameWidth('tb');
+        }else{
+            h += (this.header ? this.header.getHeight() : 0) +
+                (this.footer ? this.footer.getHeight() : 0);
         }
         return h;
-
-        /* Deprecate
-            var h  = this.el.getFrameWidth('tb') + this.bwrap.getFrameWidth('tb');
-            h += (this.tbar ? this.tbar.getHeight() : 0) +
-                 (this.bbar ? this.bbar.getHeight() : 0);
-
-            if(this.frame){
-                h += this.el.dom.firstChild.offsetHeight + this.ft.dom.offsetHeight + this.mc.getFrameWidth('tb');
-            }else{
-                h += (this.header ? this.header.getHeight() : 0) +
-                    (this.footer ? this.footer.getHeight() : 0);
-            }
-            return h;
-        */
     },
 
     /**

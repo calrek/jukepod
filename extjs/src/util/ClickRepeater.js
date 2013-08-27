@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  @class Ext.util.ClickRepeater
  @extends Ext.util.Observable
@@ -33,48 +44,51 @@
  @param {Mixed} el The element to listen on
  @param {Object} config
  */
-Ext.util.ClickRepeater = function(el, config)
-{
-    this.el = Ext.get(el);
-    this.el.unselectable();
+Ext.util.ClickRepeater = Ext.extend(Ext.util.Observable, {
+    
+    constructor : function(el, config){
+        this.el = Ext.get(el);
+        this.el.unselectable();
 
-    Ext.apply(this, config);
+        Ext.apply(this, config);
 
-    this.addEvents(
-    /**
-     * @event mousedown
-     * Fires when the mouse button is depressed.
-     * @param {Ext.util.ClickRepeater} this
-     */
+        this.addEvents(
+        /**
+         * @event mousedown
+         * Fires when the mouse button is depressed.
+         * @param {Ext.util.ClickRepeater} this
+         * @param {Ext.EventObject} e
+         */
         "mousedown",
-    /**
-     * @event click
-     * Fires on a specified interval during the time the element is pressed.
-     * @param {Ext.util.ClickRepeater} this
-     */
+        /**
+         * @event click
+         * Fires on a specified interval during the time the element is pressed.
+         * @param {Ext.util.ClickRepeater} this
+         * @param {Ext.EventObject} e
+         */
         "click",
-    /**
-     * @event mouseup
-     * Fires when the mouse key is released.
-     * @param {Ext.util.ClickRepeater} this
-     */
+        /**
+         * @event mouseup
+         * Fires when the mouse key is released.
+         * @param {Ext.util.ClickRepeater} this
+         * @param {Ext.EventObject} e
+         */
         "mouseup"
-    );
+        );
 
-    if(!this.disabled){
-        this.disabled = true;
-        this.enable();
-    }
+        if(!this.disabled){
+            this.disabled = true;
+            this.enable();
+        }
 
-    // allow inline handler
-    if(this.handler){
-        this.on("click", this.handler,  this.scope || this);
-    }
+        // allow inline handler
+        if(this.handler){
+            this.on("click", this.handler,  this.scope || this);
+        }
 
-    Ext.util.ClickRepeater.superclass.constructor.call(this);
-};
-
-Ext.extend(Ext.util.ClickRepeater, Ext.util.Observable, {
+        Ext.util.ClickRepeater.superclass.constructor.call(this);        
+    },
+    
     interval : 20,
     delay: 250,
     preventDefault : true,
@@ -136,16 +150,16 @@ Ext.extend(Ext.util.ClickRepeater, Ext.util.Observable, {
         this.purgeListeners();
     },
 
-    handleDblClick : function(){
+    handleDblClick : function(e){
         clearTimeout(this.timer);
         this.el.blur();
 
-        this.fireEvent("mousedown", this);
-        this.fireEvent("click", this);
+        this.fireEvent("mousedown", this, e);
+        this.fireEvent("click", this, e);
     },
 
     // private
-    handleMouseDown : function(){
+    handleMouseDown : function(e){
         clearTimeout(this.timer);
         this.el.blur();
         if(this.pressClass){
@@ -156,25 +170,25 @@ Ext.extend(Ext.util.ClickRepeater, Ext.util.Observable, {
         Ext.getDoc().on("mouseup", this.handleMouseUp, this);
         this.el.on("mouseout", this.handleMouseOut, this);
 
-        this.fireEvent("mousedown", this);
-        this.fireEvent("click", this);
+        this.fireEvent("mousedown", this, e);
+        this.fireEvent("click", this, e);
 
         // Do not honor delay or interval if acceleration wanted.
         if (this.accelerate) {
             this.delay = 400;
         }
-        this.timer = this.click.defer(this.delay || this.interval, this);
+        this.timer = this.click.defer(this.delay || this.interval, this, [e]);
     },
 
     // private
-    click : function(){
-        this.fireEvent("click", this);
+    click : function(e){
+        this.fireEvent("click", this, e);
         this.timer = this.click.defer(this.accelerate ?
             this.easeOutExpo(this.mousedownTime.getElapsed(),
                 400,
                 -390,
                 12000) :
-            this.interval, this);
+            this.interval, this, [e]);
     },
 
     easeOutExpo : function (t, b, c, d) {
@@ -200,12 +214,12 @@ Ext.extend(Ext.util.ClickRepeater, Ext.util.Observable, {
     },
 
     // private
-    handleMouseUp : function(){
+    handleMouseUp : function(e){
         clearTimeout(this.timer);
         this.el.un("mouseover", this.handleMouseReturn, this);
         this.el.un("mouseout", this.handleMouseOut, this);
         Ext.getDoc().un("mouseup", this.handleMouseUp, this);
         this.el.removeClass(this.pressClass);
-        this.fireEvent("mouseup", this);
+        this.fireEvent("mouseup", this, e);
     }
 });

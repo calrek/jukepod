@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /*! SWFObject v2.2 <http://code.google.com/p/swfobject/> 
     is released under the MIT License <http://www.opensource.org/licenses/mit-license.php> 
 */
@@ -45,8 +56,8 @@ var swfobject = function() {
         var w3cdom = typeof doc.getElementById != UNDEF && typeof doc.getElementsByTagName != UNDEF && typeof doc.createElement != UNDEF,
             u = nav.userAgent.toLowerCase(),
             p = nav.platform.toLowerCase(),
-            windows = p ? /win/.test(p) : /win/.test(u),
-            mac = p ? /mac/.test(p) : /mac/.test(u),
+            windows = p ? (/win/).test(p) : /win/.test(u),
+            mac = p ? (/mac/).test(p) : /mac/.test(u),
             webkit = /webkit/.test(u) ? parseFloat(u.replace(/^.*webkit\/(\d+(\.\d+)?).*$/, "$1")) : false, // returns either the webkit version or false if not webkit
             ie = !+"\v1", // feature detection based on Andrea Giammarchi's solution: http://webreflection.blogspot.com/2009/01/32-bytes-to-know-if-your-browser-is-ie.html
             playerVersion = [0,0,0],
@@ -117,7 +128,7 @@ var swfobject = function() {
             if (ua.wk) {
                 (function(){
                     if (isDomLoaded) { return; }
-                    if (!/loaded|complete/.test(doc.readyState)) {
+                    if (!(/loaded|complete/).test(doc.readyState)) {
                         setTimeout(arguments.callee, 0);
                         return;
                     }
@@ -330,8 +341,13 @@ var swfobject = function() {
                 storedAltContentId = replaceElemIdStr;
             }
             att.id = EXPRESS_INSTALL_ID;
-            if (typeof att.width == UNDEF || (!/%$/.test(att.width) && parseInt(att.width, 10) < 310)) { att.width = "310"; }
-            if (typeof att.height == UNDEF || (!/%$/.test(att.height) && parseInt(att.height, 10) < 137)) { att.height = "137"; }
+            if (typeof att.width == UNDEF || (!(/%$/).test(att.width) && parseInt(att.width, 10) < 310)) {
+                att.width = "310";
+            }
+            
+            if (typeof att.height == UNDEF || (!(/%$/).test(att.height) && parseInt(att.height, 10) < 137)) {
+                att.height = "137";
+            }
             doc.title = doc.title.slice(0, 47) + " - Flash Player Installation";
             var pt = ua.ie && ua.win ? "ActiveX" : "PlugIn",
                 fv = "MMredirectURL=" + win.location.toString().replace(/&/g,"%26") + "&MMplayerType=" + pt + "&MMdoctitle=" + doc.title;
@@ -621,6 +637,7 @@ var swfobject = function() {
                     swfobject[l] = null;
                 }
                 swfobject = null;
+                window.detachEvent('onunload', arguments.callee);
             });
         }
     }();

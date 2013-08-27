@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.Element
  * <p>Encapsulates a DOM element, adding simple DOM manipulation facilities, normalizing for browser differences.</p>
@@ -102,10 +113,7 @@ Ext.Element = function(element, forceNew){
     this.id = id || Ext.id(dom);
 };
 
-var D = Ext.lib.Dom,
-    DH = Ext.DomHelper,
-    E = Ext.lib.Event,
-    A = Ext.lib.Anim,
+var DH = Ext.DomHelper,
     El = Ext.Element,
     EC = Ext.elCache;
 
@@ -122,7 +130,7 @@ El.prototype = {
             val,
             useSet = (useSet !== false) && !!el.setAttribute;
 
-        for(attr in o){
+        for (attr in o) {
             if (o.hasOwnProperty(attr)) {
                 val = o[attr];
                 if (attr == 'style') {
@@ -635,7 +643,7 @@ el.un('click', this.handlerFn);
      * @return {Boolean}
      */
     isBorderBox : function(){
-        return noBoxAdjust[(this.dom.tagName || "").toLowerCase()] || Ext.isBorderBox;
+        return Ext.isBorderBox || Ext.isForcedBorderBox || noBoxAdjust[(this.dom.tagName || "").toLowerCase()];
     },
 
     /**
@@ -692,18 +700,62 @@ el.un('click', this.handlerFn);
      * @param {String} namespace (optional) The namespace in which to look for the attribute
      * @return {String} The attribute value
      */
-    getAttribute : Ext.isIE ? function(name, ns){
-        var d = this.dom,
-            type = typeof d[ns + ":" + name];
+    getAttribute: (function(){
+        var test = document.createElement('table'),
+            isBrokenOnTable = false,
+            hasGetAttribute = 'getAttribute' in test,
+            unknownRe = /undefined|unknown/;
 
-        if(['undefined', 'unknown'].indexOf(type) == -1){
-            return d[ns + ":" + name];
+        if (hasGetAttribute) {
+
+            try {
+                test.getAttribute('ext:qtip');
+            } catch (e) {
+                isBrokenOnTable = true;
+            }
+
+            return function(name, ns) {
+                var el = this.dom,
+                    value;
+
+                if (el.getAttributeNS) {
+                    value  = el.getAttributeNS(ns, name) || null;
+                }
+
+                if (value == null) {
+                    if (ns) {
+                        if (isBrokenOnTable && el.tagName.toUpperCase() == 'TABLE') {
+                            try {
+                                value = el.getAttribute(ns + ':' + name);
+                            } catch (e) {
+                                value = '';
+                            }
+                        } else {
+                            value = el.getAttribute(ns + ':' + name);
+                        }
+                    } else {
+                        value = el.getAttribute(name) || el[name];
+                    }
+                }
+                return value || '';
+            };
+        } else {
+            return function(name, ns) {
+                var el = this.om,
+                    value,
+                    attribute;
+
+                if (ns) {
+                    attribute = el[ns + ':' + name];
+                    value = unknownRe.test(typeof attribute) ? undefined : attribute;
+                } else {
+                    value = el[name];
+                }
+                return value || '';
+            };
         }
-        return d[name];
-    } : function(name, ns){
-        var d = this.dom;
-        return d.getAttributeNS(ns, name) || d.getAttribute(ns + ":" + name) || d.getAttribute(name) || d[name];
-    },
+        test = null;
+    })(),
 
     /**
     * Update the innerHTML of this element
@@ -755,10 +807,6 @@ ep.autoBoxAdjust = true;
 // private
 var unitPattern = /\d+(px|em|%|en|ex|pt|in|cm|mm|pc)$/i,
     docEl;
-
-/**
- * @private
- */
 
 /**
  * Retrieves Ext.Element objects.
@@ -869,6 +917,7 @@ function garbageCollect(){
         for(eid in EC){
             o = EC[eid];
             if(o.skipGC){
+                Ext.EventManager.removeFromSpecialCache(o.el);
                 continue;
             }
             el = o.el;

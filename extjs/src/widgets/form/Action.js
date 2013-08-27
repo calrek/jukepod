@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.form.Action
  * <p>The subclasses of this class provide actions to perform upon {@link Ext.form.BasicForm Form}s.</p>
@@ -211,6 +222,14 @@ buttons: [{
         this.result = this.handleResponse(response);
         return this.result;
     },
+    
+    decodeResponse: function(response) {
+        try {
+            return Ext.decode(response.responseText);
+        } catch(e) {
+            return false;
+        } 
+    },
 
     // utility functions used internally
     getUrl : function(appendParams){
@@ -342,13 +361,18 @@ Ext.extend(Ext.form.Action.Submit, Ext.form.Action, {
         if(o.clientValidation === false || this.form.isValid()){
             if (o.submitEmptyText === false) {
                 var fields = this.form.items,
-                    emptyFields = [];
-                fields.each(function(f) {
-                    if (f.el.getValue() == f.emptyText) {
-                        emptyFields.push(f);
-                        f.el.dom.value = "";
-                    }
-                });
+                    emptyFields = [],
+                    setupEmptyFields = function(f){
+                        if (f.el.getValue() == f.emptyText) {
+                            emptyFields.push(f);
+                            f.el.dom.value = "";
+                        }
+                        if(f.isComposite && f.rendered){
+                            f.items.each(setupEmptyFields);
+                        }
+                    };
+                    
+                fields.each(setupEmptyFields);
             }
             Ext.Ajax.request(Ext.apply(this.createCallback(o), {
                 form:this.form.el.dom,
@@ -404,7 +428,7 @@ Ext.extend(Ext.form.Action.Submit, Ext.form.Action, {
                 errors : errors
             };
         }
-        return Ext.decode(response.responseText);
+        return this.decodeResponse(response);
     }
 });
 
@@ -510,7 +534,7 @@ Ext.extend(Ext.form.Action.Load, Ext.form.Action, {
                 data : data
             };
         }
-        return Ext.decode(response.responseText);
+        return this.decodeResponse(response);
     }
 });
 

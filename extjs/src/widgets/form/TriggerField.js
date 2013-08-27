@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.form.TriggerField
  * @extends Ext.form.TextField
@@ -117,7 +128,7 @@ Ext.form.TriggerField = Ext.extend(Ext.form.TextField,  {
 
         this.wrap = this.el.wrap({cls: 'x-form-field-wrap x-form-field-trigger-wrap'});
         this.trigger = this.wrap.createChild(this.triggerConfig ||
-                {tag: "img", src: Ext.BLANK_IMAGE_URL, cls: "x-form-trigger " + this.triggerClass});
+                {tag: "img", src: Ext.BLANK_IMAGE_URL, alt: "", cls: "x-form-trigger " + this.triggerClass});
         this.initTrigger();
         if(!this.width){
             this.wrap.setWidth(this.el.getWidth()+this.trigger.getWidth());
@@ -152,6 +163,10 @@ Ext.form.TriggerField = Ext.extend(Ext.form.TextField,  {
         }
     },
 
+    /**
+     * Changes the hidden status of the trigger.
+     * @param {Boolean} hideTrigger True to hide the trigger, false to show it.
+     */
     setHideTrigger: function(hideTrigger){
         if(hideTrigger != this.hideTrigger){
             this.hideTrigger = hideTrigger;
@@ -160,11 +175,11 @@ Ext.form.TriggerField = Ext.extend(Ext.form.TextField,  {
     },
 
     /**
-     * @param {Boolean} value True to allow the user to directly edit the field text
      * Allow or prevent the user from directly editing the field text.  If false is passed,
      * the user will only be able to modify the field using the trigger.  Will also add
      * a click event to the text field which will call the trigger. This method
-     * is the runtime equivalent of setting the 'editable' config option at config time.
+     * is the runtime equivalent of setting the {@link #editable} config option at config time.
+     * @param {Boolean} value True to allow the user to directly edit the field text.
      */
     setEditable: function(editable){
         if(editable != this.editable){
@@ -174,11 +189,11 @@ Ext.form.TriggerField = Ext.extend(Ext.form.TextField,  {
     },
 
     /**
+     * Setting this to true will supersede settings {@link #editable} and {@link #hideTrigger}.
+     * Setting this to false will defer back to {@link #editable} and {@link #hideTrigger}. This method
+     * is the runtime equivalent of setting the {@link #readOnly} config option at config time.
      * @param {Boolean} value True to prevent the user changing the field and explicitly
      * hide the trigger.
-     * Setting this to true will superceed settings editable and hideTrigger.
-     * Setting this to false will defer back to editable and hideTrigger. This method
-     * is the runtime equivalent of setting the 'readOnly' config option at config time.
      */
     setReadOnly: function(readOnly){
         if(readOnly != this.readOnly){
@@ -315,37 +330,47 @@ Ext.form.TwinTriggerField = Ext.extend(Ext.form.TriggerField, {
 
         this.triggerConfig = {
             tag:'span', cls:'x-form-twin-triggers', cn:[
-            {tag: "img", src: Ext.BLANK_IMAGE_URL, cls: "x-form-trigger " + this.trigger1Class},
-            {tag: "img", src: Ext.BLANK_IMAGE_URL, cls: "x-form-trigger " + this.trigger2Class}
+            {tag: "img", src: Ext.BLANK_IMAGE_URL, alt: "", cls: "x-form-trigger " + this.trigger1Class},
+            {tag: "img", src: Ext.BLANK_IMAGE_URL, alt: "", cls: "x-form-trigger " + this.trigger2Class}
         ]};
     },
 
     getTrigger : function(index){
         return this.triggers[index];
     },
+    
+    afterRender: function(){
+        Ext.form.TwinTriggerField.superclass.afterRender.call(this);
+        var triggers = this.triggers,
+            i = 0,
+            len = triggers.length;
+            
+        for(; i < len; ++i){
+            if(this['hideTrigger' + (i + 1)]){
+                    triggers[i].hide();
+                }
+
+        }    
+    },
 
     initTrigger : function(){
-        var ts = this.trigger.select('.x-form-trigger', true);
-        var triggerField = this;
+        var ts = this.trigger.select('.x-form-trigger', true),
+            triggerField = this;
+            
         ts.each(function(t, all, index){
             var triggerIndex = 'Trigger'+(index+1);
             t.hide = function(){
                 var w = triggerField.wrap.getWidth();
                 this.dom.style.display = 'none';
                 triggerField.el.setWidth(w-triggerField.trigger.getWidth());
-                this['hidden' + triggerIndex] = true;
+                triggerField['hidden' + triggerIndex] = true;
             };
             t.show = function(){
                 var w = triggerField.wrap.getWidth();
                 this.dom.style.display = '';
                 triggerField.el.setWidth(w-triggerField.trigger.getWidth());
-                this['hidden' + triggerIndex] = false;
+                triggerField['hidden' + triggerIndex] = false;
             };
-
-            if(this['hide'+triggerIndex]){
-                t.dom.style.display = 'none';
-                this['hidden' + triggerIndex] = true;
-            }
             this.mon(t, 'click', this['on'+triggerIndex+'Click'], this, {preventDefault:true});
             t.addClassOnOver('x-form-trigger-over');
             t.addClassOnClick('x-form-trigger-click');
@@ -391,3 +416,4 @@ Ext.form.TwinTriggerField = Ext.extend(Ext.form.TriggerField, {
     onTrigger2Click : Ext.emptyFn
 });
 Ext.reg('trigger', Ext.form.TriggerField);
+Ext.reg('twintrigger', Ext.form.TwinTriggerField);

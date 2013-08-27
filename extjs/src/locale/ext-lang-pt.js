@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /*
  * Portuguese/Brazil Translation by Weber Souza
  * 08 April 2007
@@ -136,7 +147,8 @@ if(Ext.form.DateField){
       minText           : "A data deste campo deve ser posterior a {0}",
       maxText           : "A data deste campo deve ser anterior a {0}",
       invalidText       : "{0} n&atilde;o &eacute; uma data v&aacute;lida - deve ser usado o formato {1}",
-      format            : "d/m/Y"
+      format            : "d/m/Y",
+      startDay          : 0
    });
 }
 

@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.ToolTip
  * @extends Ext.Tip
@@ -134,7 +145,7 @@ myGrid.on('render', function(grid) {
     // private
     afterRender : function(){
         Ext.ToolTip.superclass.afterRender.call(this);
-        this.anchorEl.setStyle('z-index', this.el.getZIndex() + 1);
+        this.anchorEl.setStyle('z-index', this.el.getZIndex() + 1).setVisibilityMode(Ext.Element.DISPLAY);
     },
 
     /**
@@ -401,8 +412,8 @@ myGrid.on('render', function(grid) {
         this.showAt(this.getTargetXY());
 
         if(this.anchor){
-            this.syncAnchor();
             this.anchorEl.show();
+            this.syncAnchor();
             this.constrainPosition = this.origConstrainPosition;
         }else{
             this.anchorEl.hide();
@@ -420,6 +431,8 @@ myGrid.on('render', function(grid) {
         if(this.anchor && !this.anchorEl.isVisible()){
             this.syncAnchor();
             this.anchorEl.show();
+        }else{
+            this.anchorEl.hide();
         }
     },
 
@@ -508,7 +521,7 @@ myGrid.on('render', function(grid) {
 
     // private
     adjustPosition : function(x, y){
-        if(this.contstrainPosition){
+        if(this.constrainPosition){
             var ay = this.targetXY[1], h = this.getSize().height;
             if(y <= ay && (y+h) >= ay){
                 y = ay-h-5;

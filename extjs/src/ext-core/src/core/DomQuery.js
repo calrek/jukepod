@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /*
  * This is code is also distributed under MIT license for use
  * with jQuery and prototype JavaScript libraries.
@@ -35,7 +46,7 @@ All selectors, attribute filters and pseudos below can be combined infinitely in
     <li> <b>E[foo$=bar]</b> has an attribute "foo" that ends with "bar"</li>
     <li> <b>E[foo*=bar]</b> has an attribute "foo" that contains the substring "bar"</li>
     <li> <b>E[foo%=2]</b> has an attribute "foo" that is evenly divisible by 2</li>
-    <li> <b>E[foo!=bar]</b> has an attribute "foo" that does not equal "bar"</li>
+    <li> <b>E[foo!=bar]</b> attribute "foo" does not equal "bar"</li>
 </ul>
 <h4>Pseudo Classes:</h4>
 <ul class="list">
@@ -78,7 +89,7 @@ Ext.DomQuery = function(){
     	trimRe = /^\s+|\s+$/g,
     	tplRe = /\{(\d+)\}/g,
     	modeRe = /^(\s?[\/>+~]\s?|\s|$)/,
-    	tagTokenRe = /^(#)?([\w-\*]+)/,
+    	tagTokenRe = /^(#)?([\w\-\*]+)/,
     	nthRe = /(\d*)n\+?(\d*)/, 
     	nthRe2 = /\D/,
     	// This is for IE MSXML which does not support expandos.
@@ -286,17 +297,23 @@ Ext.DomQuery = function(){
             ri = -1, 
             useGetStyle = custom == "{",	    
             fn = Ext.DomQuery.operators[op],	    
-            a,	    
-            innerHTML;
+            a,
+            xml,
+            hasXml;
+            
         for(var i = 0, ci; ci = cs[i]; i++){
 	    // skip non-element nodes.
             if(ci.nodeType != 1){
                 continue;
             }
+            // only need to do this for the first node
+            if(!hasXml){
+                xml = Ext.DomQuery.isXml(ci);
+                hasXml = true;
+            }
 	    
-            innerHTML = ci.innerHTML;
             // we only need to change the property names if we're dealing with html nodes, not XML
-            if(innerHTML !== null && innerHTML !== undefined){
+            if(!xml){
                 if(useGetStyle){
                     a = Ext.DomQuery.getStyle(ci, attr);
                 } else if (attr == "class" || attr == "className"){
@@ -436,10 +453,10 @@ Ext.DomQuery = function(){
         compile : function(path, type){
             type = type || "select";
 
-	    // setup fn preamble
+    	    // setup fn preamble
             var fn = ["var f = function(root){\n var mode; ++batch; var n = root || document;\n"],
-		mode,		
-		lastPath,
+        		mode,		
+        		lastPath,
             	matchers = Ext.DomQuery.matchers,
             	matchersLn = matchers.length,
             	modeMatch,
@@ -586,7 +603,7 @@ Ext.DomQuery = function(){
          * Selects the value of a node, optionally replacing null with the defaultValue.
          * @param {String} selector The selector/xpath query
          * @param {Node} root (optional) The start of the query (defaults to document).
-         * @param {String} defaultValue
+         * @param {String} defaultValue (optional)
          * @return {String}
          */
         selectValue : function(path, root, defaultValue){
@@ -611,7 +628,7 @@ Ext.DomQuery = function(){
          * Selects the value of a node, parsing integers and floats. Returns the defaultValue, or 0 if none is specified.
          * @param {String} selector The selector/xpath query
          * @param {Node} root (optional) The start of the query (defaults to document).
-         * @param {Number} defaultValue
+         * @param {Number} defaultValue (optional)
          * @return {Number}
          */
         selectNumber : function(path, root, defaultValue){
@@ -658,19 +675,19 @@ Ext.DomQuery = function(){
          * statement as specified by their index.
          */
         matchers : [{
-                re: /^\.([\w-]+)/,
+                re: /^\.([\w\-]+)/,
                 select: 'n = byClassName(n, " {1} ");'
             }, {
-                re: /^\:([\w-]+)(?:\(((?:[^\s>\/]*|.*?))\))?/,
+                re: /^\:([\w\-]+)(?:\(((?:[^\s>\/]*|.*?))\))?/,
                 select: 'n = byPseudo(n, "{1}", "{2}");'
             },{
-                re: /^(?:([\[\{])(?:@)?([\w-]+)\s?(?:(=|.=)\s?['"]?(.*?)["']?)?[\]\}])/,
-                select: 'n = byAttribute(n, "{2}", "{4}", "{3}", "{1}");'
+                re: /^(?:([\[\{])(?:@)?([\w\-]+)\s?(?:(=|.=)\s?(["']?)(.*?)\4)?[\]\}])/,
+                select: 'n = byAttribute(n, "{2}", "{5}", "{3}", "{1}");'
             }, {
-                re: /^#([\w-]+)/,
+                re: /^#([\w\-]+)/,
                 select: 'n = byId(n, "{1}");'
             },{
-                re: /^@([\w-]+)/,
+                re: /^@([\w\-]+)/,
                 select: 'return {firstChild:{nodeValue:attrValue(n, "{1}")}};'
             }
         ],

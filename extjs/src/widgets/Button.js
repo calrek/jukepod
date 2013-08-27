@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.Button
  * @extends Ext.BoxComponent
@@ -194,6 +205,23 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
      */
 
     initComponent : function(){
+        if(this.menu){
+            // If array of items, turn it into an object config so we
+            // can set the ownerCt property in the config
+            if (Ext.isArray(this.menu)){
+                this.menu = { items: this.menu };
+            }
+            
+            // An object config will work here, but an instance of a menu
+            // will have already setup its ref's and have no effect
+            if (Ext.isObject(this.menu)){
+                this.menu.ownerCt = this;
+            }
+            
+            this.menu = Ext.menu.MenuMgr.get(this.menu);
+            this.menu.ownerCt = undefined;
+        }
+        
         Ext.Button.superclass.initComponent.call(this);
 
         this.addEvents(
@@ -256,9 +284,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
              */
             'menutriggerout'
         );
-        if(this.menu){
-            this.menu = Ext.menu.MenuMgr.get(this.menu);
-        }
+        
         if(Ext.isString(this.toggleGroup)){
             this.enableToggle = true;
         }
@@ -307,7 +333,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
                 Ext.Button.buttonTemplate = new Ext.Template(
                     '<table id="{4}" cellspacing="0" class="x-btn {3}"><tbody class="{1}">',
                     '<tr><td class="x-btn-tl"><i>&#160;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i>&#160;</i></td></tr>',
-                    '<tr><td class="x-btn-ml"><i>&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on"><button type="{0}"></button></em></td><td class="x-btn-mr"><i>&#160;</i></td></tr>',
+                    '<tr><td class="x-btn-ml"><i>&#160;</i></td><td class="x-btn-mc"><em class="{2} x-unselectable" unselectable="on"><button type="{0}"></button></em></td><td class="x-btn-mr"><i>&#160;</i></td></tr>',
                     '<tr><td class="x-btn-bl"><i>&#160;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i>&#160;</i></td></tr>',
                     '</tbody></table>');
                 Ext.Button.buttonTemplate.compile();
@@ -374,9 +400,10 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
 
         if(this.repeat){
             var repeater = new Ext.util.ClickRepeater(btn, Ext.isObject(this.repeat) ? this.repeat : {});
-            this.mon(repeater, 'click', this.onClick, this);
+            this.mon(repeater, 'click', this.onRepeatClick, this);
+        }else{
+            this.mon(btn, this.clickEvent, this.onClick, this);
         }
-        this.mon(btn, this.clickEvent, this.onClick, this);
     },
 
     // private
@@ -444,7 +471,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
             this.clearTip();
         }
         if(this.menu && this.destroyMenu !== false) {
-            Ext.destroy(this.menu);
+            Ext.destroy(this.btnEl, this.menu);
         }
         Ext.destroy(this.repeater);
     },
@@ -608,6 +635,11 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
     hasVisibleMenu : function(){
         return this.menu && this.menu.ownerCt == this && this.menu.isVisible();
     },
+    
+    // private
+    onRepeatClick : function(repeat, e){
+        this.onClick(e);
+    },
 
     // private
     onClick : function(e){
@@ -618,9 +650,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
             return;
         }
         if(!this.disabled){
-            if(this.enableToggle && (this.allowDepress !== false || !this.pressed)){
-                this.toggle();
-            }
+            this.doToggle();
             if(this.menu && !this.hasVisibleMenu() && !this.ignoreNextClick){
                 this.showMenu();
             }
@@ -629,6 +659,13 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
                 //this.el.removeClass('x-btn-over');
                 this.handler.call(this.scope || this, this, e);
             }
+        }
+    },
+    
+    // private
+    doToggle: function(){
+        if (this.enableToggle && (this.allowDepress !== false || !this.pressed)) {
+            this.toggle();
         }
     },
 

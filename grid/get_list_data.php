@@ -7,14 +7,18 @@ include("../locale/language.php");
 include("../security.php");
 include("inc/functions.php");
 
+//sleep(20000);
+
 $query = build_query($_REQUEST["type"]);
 
-$rs  = $db->query ($query["data"]) or mysql_die();
+echo "/* QUERY-DATA: ".$query["data"]." */\n\n";
+echo "/* QUERY-COUNT: ".$query["count"]." */\n\n";
 
+$rs    = $db->query ($query["data"]) or mysql_die();
 if($query["cacheID"])
 	$total = $query["cache_num_results"];
-else {
-
+else
+{
 	$total = $db->query ($query["count"]) or mysql_die();
 	if ($query["num_rows"])
 		$total = $db->num_rows($total);
@@ -23,5 +27,4 @@ else {
 }
 
 echo build_json($rs,$total,$query);
-
 ?>

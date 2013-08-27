@@ -16,9 +16,8 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Photos
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: AlbumQuery.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -37,7 +36,7 @@ require_once('Zend/Gdata/Photos/UserQuery.php');
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Photos
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_Photos_AlbumQuery extends Zend_Gdata_Photos_UserQuery
@@ -73,7 +72,7 @@ class Zend_Gdata_Photos_AlbumQuery extends Zend_Gdata_Photos_UserQuery
      {
          $this->_albumId = null;
          $this->_albumName = $value;
-
+         
          return $this;
      }
 
@@ -104,7 +103,7 @@ class Zend_Gdata_Photos_AlbumQuery extends Zend_Gdata_Photos_UserQuery
      {
          $this->_albumName = null;
          $this->_albumId = $value;
-
+         
          return $this;
      }
 

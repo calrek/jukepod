@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.dd.PanelProxy
  * A custom drag proxy implementation specific to {@link Ext.Panel}s. This class is primarily used internally
@@ -12,13 +23,14 @@
  * @param panel The {@link Ext.Panel} to proxy for
  * @param config Configuration options
  */
-Ext.dd.PanelProxy = function(panel, config){
-    this.panel = panel;
-    this.id = this.panel.id +'-ddproxy';
-    Ext.apply(this, config);
-};
-
-Ext.dd.PanelProxy.prototype = {
+Ext.dd.PanelProxy  = Ext.extend(Object, {
+    
+    constructor : function(panel, config){
+        this.panel = panel;
+        this.id = this.panel.id +'-ddproxy';
+        Ext.apply(this, config);        
+    },
+    
     /**
      * @cfg {Boolean} insertProxy True to insert a placeholder proxy element while dragging the panel,
      * false to drag with no proxy (defaults to true).
@@ -76,7 +88,7 @@ Ext.dd.PanelProxy.prototype = {
      */
     show : function(){
         if(!this.ghost){
-            this.ghost = this.panel.createGhost(undefined, undefined, Ext.getBody());
+            this.ghost = this.panel.createGhost(this.panel.initialConfig.cls, undefined, Ext.getBody());
             this.ghost.setXY(this.panel.el.getXY());
             if(this.insertProxy){
                 this.proxy = this.panel.el.insertSibling({cls:'x-panel-dd-spacer'});
@@ -106,31 +118,34 @@ Ext.dd.PanelProxy.prototype = {
             parentNode.insertBefore(this.proxy.dom, before);
         }
     }
-};
+});
 
 // private - DD implementation for Panels
-Ext.Panel.DD = function(panel, cfg){
-    this.panel = panel;
-    this.dragData = {panel: panel};
-    this.proxy = new Ext.dd.PanelProxy(panel, cfg);
-    Ext.Panel.DD.superclass.constructor.call(this, panel.el, cfg);
-    var h = panel.header;
-    if(h){
-        this.setHandleElId(h.id);
-    }
-    (h ? h : this.panel.body).setStyle('cursor', 'move');
-    this.scroll = false;
-};
-
-Ext.extend(Ext.Panel.DD, Ext.dd.DragSource, {
+Ext.Panel.DD = Ext.extend(Ext.dd.DragSource, {
+    
+    constructor : function(panel, cfg){
+        this.panel = panel;
+        this.dragData = {panel: panel};
+        this.proxy = new Ext.dd.PanelProxy(panel, cfg);
+        Ext.Panel.DD.superclass.constructor.call(this, panel.el, cfg);
+        var h = panel.header,
+            el = panel.body;
+        if(h){
+            this.setHandleElId(h.id);
+            el = panel.header;
+        }
+        el.setStyle('cursor', 'move');
+        this.scroll = false;        
+    },
+    
     showFrame: Ext.emptyFn,
     startDrag: Ext.emptyFn,
     b4StartDrag: function(x, y) {
         this.proxy.show();
     },
     b4MouseDown: function(e) {
-        var x = e.getPageX();
-        var y = e.getPageY();
+        var x = e.getPageX(),
+            y = e.getPageY();
         this.autoOffset(x, y);
     },
     onInitDrag : function(x, y){

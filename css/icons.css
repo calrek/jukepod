@@ -77,7 +77,7 @@
 }
 
 .icon-folder {
-	background-image:url(extjs/resources/images/<?=$skin_image_folder;?>/tree/folder.gif) !important;
+	background-image:url(extjs/resources/images/default/tree/folder.gif) !important;
 }
 
 .icon-new-update {
@@ -132,9 +132,6 @@
 	background-image:url(img/silk/icons/disk.png) !important;
 }		
 
-.icon-fbshare {
-	background-image:url(img/silk/icons/fbshare.png) !important;
-}
 .test .x-dd-drop-icon {
 	background-image:url(img/silk/icons/pencil.png) !important;	
 }

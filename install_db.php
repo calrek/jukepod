@@ -9,7 +9,7 @@ $_SESSION["sql_log"] = array();
 
 $db = new db( "", "", "", "", CREATE_DB );
 
-$queries = file_get_contents( "jbdump.sql" );
+$queries = file_get_contents( "db/jpod.sql" );
 
 $query_array = explode( ";", $queries );
 

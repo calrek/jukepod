@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.chart.Chart
  * @extends Ext.FlashComponent
@@ -382,7 +393,7 @@
             return {
                 fn: val.fn,
                 scope: val.scope || this
-            }
+            };
         }
     },
 
@@ -406,7 +417,7 @@ Ext.chart.Chart.proxyFunction = {};
  * @static
  * @type String
  */
-Ext.chart.Chart.CHART_URL = 'http:/' + '/yui.yahooapis.com/2.8.0/build/charts/assets/charts.swf';
+Ext.chart.Chart.CHART_URL = 'http:/' + '/yui.yahooapis.com/2.8.2/build/charts/assets/charts.swf';
 
 /**
  * @class Ext.chart.PieChart
@@ -818,7 +829,7 @@ Ext.chart.TimeAxis = Ext.extend(Ext.chart.Axis, {
     /**
      * The spacing between minor intervals on this axis.
      *
-     * @property majorUnit
+     * @property minorUnit
      * @type Number
      */
     minorUnit: NaN,
@@ -826,7 +837,7 @@ Ext.chart.TimeAxis = Ext.extend(Ext.chart.Axis, {
     /**
      * The time unit used by the minorUnit.
      *
-     * @property majorTimeUnit
+     * @property minorTimeUnit
      * @type String
      */
     minorTimeUnit: null,

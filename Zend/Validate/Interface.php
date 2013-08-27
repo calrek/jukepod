@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -14,15 +15,16 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Interface.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id: Interface.php 8064 2008-02-16 10:58:39Z thomas $
  */
+
 
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 interface Zend_Validate_Interface
@@ -36,7 +38,7 @@ interface Zend_Validate_Interface
      *
      * @param  mixed $value
      * @return boolean
-     * @throws Zend_Validate_Exception If validation of $value is impossible
+     * @throws Zend_Valid_Exception If validation of $value is impossible
      */
     public function isValid($value);
 
@@ -51,4 +53,19 @@ interface Zend_Validate_Interface
      * @return array
      */
     public function getMessages();
+
+    /**
+     * Returns an array of message codes that explain why a previous isValid() call
+     * returned false.
+     *
+     * If isValid() was never called or if the most recent isValid() call
+     * returned true, then this method returns an empty array.
+     *
+     * This is now the same as calling array_keys() on the return value from getMessages().
+     *
+     * @return array
+     * @deprecated Since 1.5.0
+     */
+    public function getErrors();
+
 }

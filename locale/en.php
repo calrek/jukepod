@@ -1,4 +1,4 @@
-<?php
+<?php 
 $lang = array();
 
 $lang["no_albums_found"] = "no albums found";
@@ -6,7 +6,7 @@ $lang["nobody"] = "nobody";
 $lang["error_soap_constructor"] = "Error while creating the soap-object";
 $lang["no_lyrics_found"] = "There were no lyrics found for this song/artist";
 
-$lang["demo_message_title"] = "Welcome to the demo-version of Jukepod!";
+$lang["demo_message_title"] = "Welcome to the demo-version of MyWebJukebox!";
 $lang["demo_message_text"]  = "On this site, no copyright-protected material is available for download or streaming!<br /><br />Whatever entry you will choose, will always be played \"Feel the Love\" from <a href='http://www.sinusblitz.com' target='_blank'>Sinusblitz</a> which he contributed to this project.<br /><br />In the demo-version, all changes on playlists won't be saved.";
 
 $lang["folder"] = "Folder";
@@ -98,7 +98,7 @@ $lang["filesize"] = "Size";
 $lang["duration"] = "Length";
 $lang["path"] = "Path";
 
-$lang["num_plays"] = "played";
+$lang["num_plays"] = "Played";
 $lang["bit_rate"] = "Bit-rate";
 
 $lang["filter_on"] = "Filter on";
@@ -124,21 +124,21 @@ $lang["delete_playlist_confirm"] = "Are you sure you want to delete this playlis
 $lang["clear_playlist_confirm"] = "Are you sure you want to clear this playlist?";
 $lang["none"] = "none";
 
-$lang["latest50"] = "recently added";
-$lang["tooltip_latest50"] = "50 recently added songs";
-$lang["latest_listened50"] = "recently listened";
-$lang["tooltip_latest_listened50"] = "50 recently listened songs";
-$lang["top50"] = "most listened";
-$lang["tooltip_top50"] = "50 most listened songs";
-$lang["5stars50"] = "5 star-songs";
-$lang["tooltip_5stars50"] = "songs with a 5 star rating";
-$lang["4stars50"] = "4 star-songs";
-$lang["tooltip_4stars50"] = "songs with a 4 or higher star rating";
-$lang["3stars50"] = "3 star-songs";
-$lang["tooltip_3stars50"] = "songs with a 3 or higher star rating";
+$lang["latest50"] = "Recently Added";
+$lang["tooltip_latest50"] = "50 Recently Added Songs";
+$lang["latest_listened50"] = "Recently Listened";
+$lang["tooltip_latest_listened50"] = "50 Recently Listened Songs";
+$lang["top50"] = "Most Listened";
+$lang["tooltip_top50"] = "50 Most Listened Songs";
+$lang["5stars50"] = "5 Star-Songs";
+$lang["tooltip_5stars50"] = "Songs With A 5 Star Rating";
+$lang["4stars50"] = "4 Star-Songs";
+$lang["tooltip_4stars50"] = "Songs With A 4 or Higher Star Rating";
+$lang["3stars50"] = "3 Star-Songs";
+$lang["tooltip_3stars50"] = "Songs With A 3 or Higher Star Rating";
 
 $lang["random"] = "Shuffle";
-$lang["random_tooltip"] = "Shuffle on/off";
+$lang["random_tooltip"] = "Shuffle On/Off";
 
 $lang["filter"] = "Filter";
 $lang["yes"] = "Yes";
@@ -153,13 +153,13 @@ $lang["select_all"] = "Select all";
 $lang["min_chars_tooltip"] = "Enter at least {0} character(s)";
 
 $lang["show"] = "Show";
-$lang["entries"] = "entries";
+$lang["entries"] = "Entries";
 
 $lang["stream_files"] = "stream files";
 $lang["dont_stream_files"] = "access through web folder";
 
 $lang["warning_changes_get_lost"] = "Current changes will be lost! Are you sure?";
-$lang["create_new_user"] = "create new user";
+$lang["create_new_user"] = "Create New User";
 $lang["new"] = "New";
 
 $lang["please_enter_username"] = "please enter a name";
@@ -175,8 +175,8 @@ $lang["see_all_playlists"] = "see all playlists";
 $lang["edit_own_playlists"] = "edit own playlists";
 $lang["edit_all_playlists"] = "edit all playlists";
 $lang["edit_tags"] = "edit tags";
-$lang["download_files"] = "download files";
-$lang["fetch_lyrics"] = "fetch lyrics";
+$lang["download_files"] = "Download Files";
+$lang["fetch_lyrics"] = "Fetch Lyrics";
 $lang["fetch_youtube_videos"] = "fetch youtube-videos";
 $lang["passwords_dont_match"] = "the entered passwords don't match";
 $lang["password_missing"] = "you have to enter a password for this user";
@@ -185,7 +185,7 @@ $lang["username_already_exists"] = "a user with this username alread exists";
 $lang["error_saving"] = "unable to save, there were errors";
 $lang["confirm_user_delete"] = "are you sure that want to delete this user?";
 $lang["error_deleting_user"] = "error deleting user";
-$lang["files"] = "files";
+$lang["files"] = "Files";
 $lang["created_by"] = "created by";
 $lang["user"] = "user";
 $lang["password"] = "password";
@@ -193,35 +193,35 @@ $lang["username"] = "username";
 $lang["login"] = "login";
 $lang["title_login"] = "Jukepod-login";
 $lang["login_fail"] = "login was not successfull";
-$lang["hello"] = "hello";
-$lang["logout"] = "logout";
+$lang["hello"] = "Hello";
+$lang["logout"] = "Logout";
 $lang["no_permission_to_add_to_playlist"] = "you are not allowed to add songs to this playlist";
 
 $lang["no_permission"] = "permission denied";
-$lang["year"] = "year";
-$lang["loading_video"] = "loading video...";
-$lang["error_saving_playlist"] = "error saving playlist";
+$lang["year"] = "Year";
+$lang["loading_video"] = "Loading video...";
+$lang["error_saving_playlist"] = "Rrror Saving Playlist";
 
 $lang["sum_entries"] = "{2} entries";
 
-$lang["unknown"] = "unknown";
-$lang["various"] = "various";
+$lang["unknown"] = "Unknown";
+$lang["various"] = "Various";
 $lang["save_login"] = "remember login";
 
-$lang["undock"] = "undock player";
+$lang["undock"] = "Undock Player";
 
-$lang["list"] = "list";
+$lang["list"] = "List";
 $lang["big_cover"] = "large cover";
 $lang["medium_cover"] = "medium cover";
 $lang["small_cover"] = "small cover";
 
-$lang["change_view"] = "change view";
+$lang["change_view"] = "Change view";
 
 $lang["import_album_cover_title"] = "album cover import";
 
-$lang["unknown_song"] = "unknown song";
+$lang["unknown_song"] = "Unknown Song";
 
-$lang["volume"] = "volume";
+$lang["volume"] = "Volume";
 
 $lang["files_found"] = "files found";
 $lang["currently_processing"] = "currently processing";
@@ -233,21 +233,21 @@ $lang["cover_processed"] = "cover processed";
 
 $lang["import_cover"] = "import album cover";
 
-$lang["clear_playlist"] = "clear playlist";
-$lang["clear_cache"] = "clear cache";
+$lang["clear_playlist"] = "Clear Playlist";
+$lang["clear_cache"] = "Clear Cache";
 $lang["clear_cache_confirm"] = "Are you sure that you want to clear the cache?";
 
 $lang["songs"] = "Songs";
 
-$lang["comment"] = "comment";
+$lang["comment"] = "Comment";
 
-$lang["rating"] = "rating";
+$lang["rating"] = "Rating";
 
-$lang["fulltext"] = "fulltext";
-$lang["substring"] = "substring";
+$lang["fulltext"] = "Fulltext";
+$lang["substring"] = "Substring";
 
-$lang["about_title"] = "About MyWebJukebox 1.3.1";
+$lang["about_title"] = "About Jukepod 1.0.0";
 $lang["about_text"] = "";
 
-$lang["select_all"] = "select all";
+$lang["select_all"] = "Select All";
 ?>

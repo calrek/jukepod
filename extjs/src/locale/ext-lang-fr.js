@@ -1,15 +1,26 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 ﻿/*
  * France (France) translation
  * By Thylia
  * 09-11-2007, 02:22 PM
- * updated to 2.2 by disizben (22 Sep 2008)
- * updated to 3.2 by Thylia (20 Apr 2010)
+ * updated by disizben (22 Sep 2008)
+ * updated by Thylia (20 Apr 2010)
  */
 
 Ext.UpdateManager.defaults.indicatorText = '<div class="loading-indicator">En cours de chargement...</div>';
@@ -116,6 +127,9 @@ if(Ext.util.Format){
         if(!Ext.isDate(v)) v = new Date(Date.parse(v));
         return v.dateFormat(format || "d/m/Y");
     };
+    Ext.util.Format.plural = function(v, s, p) {
+        return v + ' ' + (v <= 1 ? s : (p ? p : s + 's'));
+    };
 }
 
 if(Ext.DatePicker){
@@ -153,7 +167,7 @@ if(Ext.PagingToolbar){
 }
 
 if(Ext.form.BasicForm){
-    Ext.form.BasicForm.prototype.waitTitle = "Veuillez patienter..."
+    Ext.form.BasicForm.prototype.waitTitle = "Veuillez patienter...";
 }
 
 if(Ext.form.Field){
@@ -188,7 +202,8 @@ if(Ext.form.DateField){
       maxText           : "La date de ce champ ne peut être postérieure au {0}",
       invalidText       : "{0} n'est pas une date valide - elle doit être au format suivant: {1}",
       format            : "d/m/y",
-      altFormats        : "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
+      altFormats        : "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d",
+      startDay          : 1
    });
 }
 

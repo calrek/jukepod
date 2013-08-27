@@ -106,7 +106,7 @@ function SoundManager(smURL, smID) {
     'pan': 0,                 // "pan" settings, left-to-right, -100 to 100
     'stream': true,           // allows playing before entire file has loaded (recommended)
     'to': null,               // position to end playback within a sound (msec), default = end
-    'type': null,             // MIME-like hint for file pattern / canPlay() tests, eg. audio/mp3
+    'type': 'audio/mp3',             // MIME-like hint for file pattern / canPlay() tests, eg. audio/mp3
     'usePolicyFile': false,   // enable crossdomain.xml request for audio on remote domains (for ID3/waveform access)
     'volume': 100             // self-explanatory. 0-100, the latter being the max.
 

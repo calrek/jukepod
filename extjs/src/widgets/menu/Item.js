@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.menu.Item
  * @extends Ext.menu.BaseItem
@@ -54,6 +65,12 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
      * @cfg {Number} showDelay Length of time in milliseconds to wait before showing this item (defaults to 200)
      */
     showDelay: 200,
+    
+    /**
+     * @cfg {String} altText The altText to use for the icon, if it exists. Defaults to <tt>''</tt>.
+     */
+    altText: '',
+    
     // doc'd in BaseItem
     hideDelay: 200,
 
@@ -63,8 +80,20 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
     initComponent : function(){
         Ext.menu.Item.superclass.initComponent.call(this);
         if(this.menu){
+            // If array of items, turn it into an object config so we
+            // can set the ownerCt property in the config
+            if (Ext.isArray(this.menu)){
+                this.menu = { items: this.menu };
+            }
+            
+            // An object config will work here, but an instance of a menu
+            // will have already setup its ref's and have no effect
+            if (Ext.isObject(this.menu)){
+                this.menu.ownerCt = this;
+            }
+            
             this.menu = Ext.menu.MenuMgr.get(this.menu);
-            this.menu.ownerCt = this;
+            this.menu.ownerCt = undefined;
         }
     },
 
@@ -72,12 +101,12 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
     onRender : function(container, position){
         if (!this.itemTpl) {
             this.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(
-                '<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}"',
+                '<a id="{id}" class="{cls} x-unselectable" hidefocus="true" unselectable="on" href="{href}"',
                     '<tpl if="hrefTarget">',
                         ' target="{hrefTarget}"',
                     '</tpl>',
                  '>',
-                     '<img src="{icon}" class="x-menu-item-icon {iconCls}"/>',
+                     '<img alt="{altText}" src="{icon}" class="x-menu-item-icon {iconCls}"/>',
                      '<span class="x-menu-item-text">{text}</span>',
                  '</a>'
              );
@@ -100,7 +129,8 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
             hrefTarget: this.hrefTarget,
             icon: this.icon || Ext.BLANK_IMAGE_URL,
             iconCls: this.iconCls || '',
-            text: this.itemText||this.text||'&#160;'
+            text: this.itemText||this.text||'&#160;',
+            altText: this.altText || ''
         };
     },
 
@@ -130,6 +160,8 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
 
     //private
     beforeDestroy: function(){
+        clearTimeout(this.showTimer);
+        clearTimeout(this.hideTimer);
         if (this.menu){
             delete this.menu.ownerCt;
             this.menu.destroy();

@@ -1,22 +1,20 @@
-<?php 
-include ("../config/config.php");
-include ("../locale/language.php");
+<?php  
+include("../config/config.php");
+include("../locale/language.php");
+include("../inc/database.php");
+include("../inc/functions.php");
+include("../security.php");
 
-header("Content-type:text/javascript; charset=utf-8");
-
-include ("Ext.ux.grid.Search.php");
-include ("Ext.grid.RowExpander.php");
-include ("Ext.ux.dd.GridReorderDropTarget.php");
-include ("Ext.ux.grid.RowActions.php");
-include ("Ext.ux.grid.ExplorerView.php");
-include ("Ext.ux.SlidingPager.php");
-include ("Ext.ux.layout.flexAccord.DropTarget.php");
-include ("Ext.ux.layout.flexAccord.DropPanel.php");
-include ("Ext.ux.layout.flexAccord.SplitBar.php");
-include ("Ext.ux.layout.flexAccord.Layout.php");
-include ("Ext.plugins.TDGi.WindowDrawer.php");
-include ("Ext.plugins.TDGi.WindowBlind.php");
-include ("Ext.plugins.Youtubeplayer.php");
-include ("PanelResizer.php");
-include ("pPageSize.php");
+header("Content-Type: application/x-javascript; charset=utf-8"); 
+include ("lib.js");
+include ("player.js");
+include ("userform.js");
+include ("Ext.ux.grid.Search.js");
+include ("Ext.grid.RowExpander.js");
+include ("Ext.ux.grid.RowActions.js");
+include ("Ext.ux.grid.ExplorerView.js");
+include ("GridViewMenuPlugin.js");
+include ("pPageSize.js");
+include ("Ext.ux.grid.RateColumn.js");
+include ("Ext.ux.dd.GridReorderDropTarget.js");
 ?>

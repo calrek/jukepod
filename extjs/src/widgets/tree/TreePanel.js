@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.tree.TreePanel
  * @extends Ext.Panel
@@ -638,6 +649,12 @@ new Ext.tree.TreePanel({
      * (bSuccess, oLastNode) where bSuccess is if the expand was successful and oLastNode is the last node that was expanded.
      */
     expandPath : function(path, attr, callback){
+        if(Ext.isEmpty(path)){
+            if(callback){
+                callback(false, undefined);
+            }
+            return;
+        }
         attr = attr || 'id';
         var keys = path.split(this.pathSeparator);
         var curNode = this.root;
@@ -676,6 +693,12 @@ new Ext.tree.TreePanel({
      * (bSuccess, oSelNode) where bSuccess is if the selection was successful and oSelNode is the selected node.
      */
     selectPath : function(path, attr, callback){
+        if(Ext.isEmpty(path)){
+            if(callback){
+                callback(false, undefined);
+            }
+            return;
+        }
         attr = attr || 'id';
         var keys = path.split(this.pathSeparator),
             v = keys.pop();
@@ -895,14 +918,6 @@ new Ext.tree.TreePanel({
      */
     /**
      * @event beforeadd
-     * @hide
-     */
-    /**
-     * @event beforeremove
-     * @hide
-     */
-    /**
-     * @event remove
      * @hide
      */
 

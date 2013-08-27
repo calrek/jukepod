@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.form.FormPanel
  * @extends Ext.Panel
@@ -270,9 +281,11 @@ Ext.FormPanel = Ext.extend(Ext.Panel, {
             // If a Container, its already destroyed by the time it gets here.  Remove any references to destroyed fields.
             }else if (c.findBy){
                 Ext.each(c.findBy(this.isField), this.form.remove, this.form);
-                if (c.isDestroyed) {
-                    this.form.cleanDestroyed();
-                }
+                /*
+                 * This isn't the most efficient way of getting rid of the items, however it's the most
+                 * correct, which in this case is most important.
+                 */
+                this.form.cleanDestroyed();
             }
         }
     },

@@ -1,24 +1,34 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.Element
  */
 Ext.Element.addMethods(function(){
     // local style camelizing for speed
-    var propCache = {},
+    var supports = Ext.supports,
+        propCache = {},
         camelRe = /(-[a-z])/gi,
-        classReCache = {},
         view = document.defaultView,
-        propFloat = Ext.isIE ? 'styleFloat' : 'cssFloat',
         opacityRe = /alpha\(opacity=(.*)\)/i,
         trimRe = /^\s+|\s+$/g,
+        EL = Ext.Element,
         spacesRe = /\s+/,
         wordsRe = /\w/g,
-        EL = Ext.Element,
         PADDING = "padding",
         MARGIN = "margin",
         BORDER = "border",
@@ -47,7 +57,7 @@ Ext.Element.addMethods(function(){
     }
 
     function chkCache(prop) {
-        return propCache[prop] || (propCache[prop] = prop == 'float' ? propFloat : prop.replace(camelRe, camelFn));
+        return propCache[prop] || (propCache[prop] = prop == 'float' ? (supports.cssFloat ? 'cssFloat' : 'styleFloat') : prop.replace(camelRe, camelFn));
     }
 
     return {
@@ -199,29 +209,26 @@ Ext.Element.addMethods(function(){
                         v,
                         cs,
                         out,
-                        display,
-                        wk = Ext.isWebKit,
                         display;
 
                     if(el == document){
                         return null;
                     }
                     prop = chkCache(prop);
-                    // Fix bug caused by this: https://bugs.webkit.org/show_bug.cgi?id=13343
-                    if(wk && /marginRight/.test(prop)){
-                        display = this.getStyle('display');
-                        el.style.display = 'inline-block';
-                    }
                     out = (v = el.style[prop]) ? v :
                            (cs = view.getComputedStyle(el, "")) ? cs[prop] : null;
-
-                    // Webkit returns rgb values for transparent.
-                    if(wk){
-                        if(out == 'rgba(0, 0, 0, 0)'){
-                            out = 'transparent';
-                        }else if(display){
-                            el.style.display = display;
-                        }
+                           
+                    // Ignore cases when the margin is correctly reported as 0, the bug only shows
+                    // numbers larger.
+                    if(prop == 'marginRight' && out != '0px' && !supports.correctRightMargin){
+                        display = el.style.display;
+                        el.style.display = 'inline-block';
+                        out = view.getComputedStyle(el, '').marginRight;
+                        el.style.display = display;
+                    }
+                    
+                    if(prop == 'backgroundColor' && out == 'rgba(0, 0, 0, 0)' && !supports.correctTransparentColor){
+                        out = 'transparent';
                     }
                     return out;
                 } :
@@ -260,7 +267,7 @@ Ext.Element.addMethods(function(){
                 color = (typeof prefix != 'undefined') ? prefix : '#',
                 h;
 
-            if(!v || /transparent|inherit/.test(v)){
+            if(!v || (/transparent|inherit/.test(v))) {
                 return defaultValue;
             }
             if(/^r/.test(v)){
@@ -282,9 +289,8 @@ Ext.Element.addMethods(function(){
          * @return {Ext.Element} this
          */
         setStyle : function(prop, value){
-            var tmp,
-                style,
-                camel;
+            var tmp, style;
+            
             if (typeof prop != 'object') {
                 tmp = {};
                 tmp[prop] = value;
@@ -311,7 +317,7 @@ Ext.Element.addMethods(function(){
                 s = me.dom.style;
 
             if(!animate || !me.anim){
-                if(Ext.isIE){
+                if(Ext.isIE9m){
                     var opac = opacity < 1 ? 'alpha(opacity=' + opacity * 100 + ')' : '',
                     val = s.filter.replace(opacityRe, '').replace(trimRe, '');
 
@@ -332,7 +338,7 @@ Ext.Element.addMethods(function(){
          */
         clearOpacity : function(){
             var style = this.dom.style;
-            if(Ext.isIE){
+            if(Ext.isIE9m){
                 if(!Ext.isEmpty(style.filter)){
                     style.filter = style.filter.replace(opacityRe, '').replace(trimRe, '');
                 }
@@ -350,7 +356,7 @@ Ext.Element.addMethods(function(){
         getHeight : function(contentHeight){
             var me = this,
                 dom = me.dom,
-                hidden = Ext.isIE && me.isStyle('display', 'none'),
+                hidden = Ext.isIE9m && me.isStyle('display', 'none'),
                 h = MATH.max(dom.offsetHeight, hidden ? 0 : dom.clientHeight) || 0;
 
             h = !contentHeight ? h : h - me.getBorderWidth("tb") - me.getPadding("tb");
@@ -365,7 +371,7 @@ Ext.Element.addMethods(function(){
         getWidth : function(contentWidth){
             var me = this,
                 dom = me.dom,
-                hidden = Ext.isIE && me.isStyle('display', 'none'),
+                hidden = Ext.isIE9m && me.isStyle('display', 'none'),
                 w = MATH.max(dom.offsetWidth, hidden ? 0 : dom.clientWidth) || 0;
             w = !contentWidth ? w : w - me.getBorderWidth("lr") - me.getPadding("lr");
             return w < 0 ? 0 : w;
@@ -503,6 +509,6 @@ Ext.fly('elId').setHeight(150, {
         },
 
         margins : margins
-    }
+    };
 }()
 );

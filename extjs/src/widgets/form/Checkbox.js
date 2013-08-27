@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.form.Checkbox
  * @extends Ext.form.Field
@@ -35,9 +46,6 @@ Ext.form.Checkbox = Ext.extend(Ext.form.Field,  {
      * {tag: 'input', type: 'checkbox', autocomplete: 'off'})
      */
     defaultAutoCreate : { tag: 'input', type: 'checkbox', autocomplete: 'off'},
-    /**
-     * @cfg {String} boxLabel The text that appears beside the checkbox
-     */
     /**
      * @cfg {String} inputValue The value that should go into the generated input element's value attribute
      */
@@ -118,7 +126,7 @@ Ext.form.Checkbox = Ext.extend(Ext.form.Field,  {
             this.checked = this.el.dom.checked;
         }
         // Need to repaint for IE, otherwise positioning is broken
-        if(Ext.isIE){
+        if (Ext.isIEQuirks) {
             this.wrap.repaint();
         }
         this.resizeEl = this.positionEl = this.wrap;
@@ -161,8 +169,15 @@ Ext.form.Checkbox = Ext.extend(Ext.form.Field,  {
      * @return {Ext.form.Field} this
      */
     setValue : function(v){
-        var checked = this.checked ;
-        this.checked = (v === true || v === 'true' || v == '1' || String(v).toLowerCase() == 'on');
+        var checked = this.checked,
+            inputVal = this.inputValue;
+            
+        if (v === false) {
+            this.checked = false;
+        } else {
+            this.checked = (v === true || v === 'true' || v == '1' || (inputVal ? v == inputVal : String(v).toLowerCase() == 'on'));
+        }
+        
         if(this.rendered){
             this.el.dom.checked = this.checked;
             this.el.dom.defaultChecked = this.checked;

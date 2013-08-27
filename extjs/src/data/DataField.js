@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.data.Field
  * <p>This class encapsulates the field definition information specified in the field definition objects
@@ -130,6 +141,14 @@ var myData = [
      * javascript millisecond timestamp. See {@link Date}</p>
      */
     dateFormat: null,
+    
+    /**
+     * @cfg {Boolean} useNull
+     * <p>(Optional) Use when converting received data into a Number type (either int or float). If the value cannot be parsed,
+     * null will be used if useNull is true, otherwise the value will be 0. Defaults to <tt>false</tt>
+     */
+    useNull: false,
+    
     /**
      * @cfg {Mixed} defaultValue
      * (Optional) The default value used <b>when a Record is being created by a {@link Ext.data.Reader Reader}</b>

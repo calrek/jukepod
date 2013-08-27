@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.layout.FormLayout
  * @extends Ext.layout.AnchorLayout
@@ -117,9 +128,9 @@ Ext.layout.FormLayout = Ext.extend(Ext.layout.AnchorLayout, {
 
     /**
      * @cfg {Boolean} trackLabels
-     * True to show/hide the field label when the field is hidden. Defaults to <tt>false</tt>.
+     * True to show/hide the field label when the field is hidden. Defaults to <tt>true</tt>.
      */
-    trackLabels: false,
+    trackLabels: true,
 
     type: 'form',
 
@@ -147,21 +158,23 @@ Ext.layout.FormLayout = Ext.extend(Ext.layout.AnchorLayout, {
     // private
     setContainer : function(ct){
         Ext.layout.FormLayout.superclass.setContainer.call(this, ct);
-        if(ct.labelAlign){
-            ct.addClass('x-form-label-'+ct.labelAlign);
+        ct.labelAlign = ct.labelAlign || this.labelAlign;
+        if (ct.labelAlign) {
+            ct.addClass('x-form-label-' + ct.labelAlign);
         }
 
-        if(ct.hideLabels){
+        if (ct.hideLabels || this.hideLabels) { 
             Ext.apply(this, {
                 labelStyle: 'display:none',
                 elementStyle: 'padding-left:0;',
                 labelAdjust: 0
             });
-        }else{
-            this.labelSeparator = ct.labelSeparator || this.labelSeparator;
-            ct.labelWidth = ct.labelWidth || 100;
+        } else {
+            this.labelSeparator = Ext.isDefined(ct.labelSeparator) ? ct.labelSeparator : this.labelSeparator;
+            ct.labelWidth = ct.labelWidth || this.labelWidth || 100;
             if(Ext.isNumber(ct.labelWidth)){
-                var pad = Ext.isNumber(ct.labelPad) ? ct.labelPad : 5;
+                var pad = ct.labelPad || this.labelPad;
+                pad = Ext.isNumber(pad) ? pad : 5;
                 Ext.apply(this, {
                     labelAdjust: ct.labelWidth + pad,
                     labelStyle: 'width:' + ct.labelWidth + 'px;',
@@ -317,12 +330,18 @@ new Ext.Template(
      * @return {Object} An object hash containing the properties required to render the Field.
      */
     getTemplateArgs: function(field) {
-        var noLabelSep = !field.fieldLabel || field.hideLabel;
+        var noLabelSep = !field.fieldLabel || field.hideLabel,
+            itemCls = (field.itemCls || this.container.itemCls || '') + (field.hideLabel ? ' x-hide-label' : '');
+
+        // IE9 quirks needs an extra, identifying class on wrappers of TextFields
+        if (Ext.isIE9 && Ext.isIEQuirks && field instanceof Ext.form.TextField) {
+            itemCls += ' x-input-wrapper';
+        }
 
         return {
             id            : field.id,
             label         : field.fieldLabel,
-            itemCls       : (field.itemCls || this.container.itemCls || '') + (field.hideLabel ? ' x-hide-label' : ''),
+            itemCls       : itemCls,
             clearCls      : field.clearCls || 'x-form-clear-left',
             labelStyle    : this.getLabelStyle(field.labelStyle),
             elementStyle  : this.elementStyle || '',
@@ -333,7 +352,7 @@ new Ext.Template(
     // private
     adjustWidthAnchor: function(value, c){
         if(c.label && !this.isHide(c) && (this.container.labelAlign != 'top')){
-            var adjust = Ext.isIE6 || (Ext.isIE && !Ext.isStrict);
+            var adjust = Ext.isIE6 || Ext.isIEQuirks;
             return value - this.labelAdjust + (adjust ? -3 : 0);
         }
         return value;

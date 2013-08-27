@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 ﻿/*
  * Serbian Cyrillic Translation
  * by Čolovic Vladan (cyrillic, utf8 encoding)
@@ -89,7 +100,7 @@ if(Ext.DatePicker){
       monthYearText     : 'Изаберите месец (Control+Горе/Доле за избор године)',
       todayTip          : "{0} (Размакница)",
       format            : "d.m.y",
-      startDay 		 : 1
+      startDay          : 1
    });
 }
 
@@ -132,7 +143,8 @@ if(Ext.form.DateField){
       minText           : "Датум у овом пољу мора бити након {0}",
       maxText           : "Датум у овом пољу мора бити пре {0}",
       invalidText       : "{0} није правилан датум - захтевани облик је {1}",
-      format            : "d.m.y"
+      format            : "d.m.y",
+      startDay          : 1
    });
 }
 

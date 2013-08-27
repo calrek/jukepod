@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.MessageBox
  * <p>Utility class for generating different styles of message boxes.  The alias Ext.Msg can also be used.<p/>
@@ -181,7 +192,8 @@ Ext.MessageBox = function(){
             if(!dlg.isVisible() && !opt.width){
                 dlg.setSize(this.maxWidth, 100); // resize first so content is never clipped from previous shows
             }
-            msgEl.update(text || '&#160;');
+            // Append a space here for sizing. In IE, for some reason, it wraps text incorrectly without one in some cases
+            msgEl.update(text ? text + ' ' : '&#160;');
 
             var iw = iconCls != '' ? (iconEl.getWidth() + iconEl.getMargins('lr')) : 0,
                 mw = msgEl.getWidth() + msgEl.getMargins('lr'),
@@ -189,11 +201,6 @@ Ext.MessageBox = function(){
                 bw = dlg.body.getFrameWidth('lr'),
                 w;
                 
-            if (Ext.isIE && iw > 0){
-                //3 pixels get subtracted in the icon CSS for an IE margin issue,
-                //so we have to add it back here for the overall width to be consistent
-                iw += 3;
-            }
             w = Math.max(Math.min(opt.width || iw+mw+fw+bw, opt.maxWidth || this.maxWidth),
                     Math.max(opt.minWidth || this.minWidth, bwidth || 0));
 
@@ -203,9 +210,10 @@ Ext.MessageBox = function(){
             if(opt.progress === true || opt.wait === true){
                 progressBar.setSize(w-iw-fw-bw);
             }
-            if(Ext.isIE && w == bwidth){
+            if(Ext.isIE9m && w == bwidth){
                 w += 4; //Add offset when the content width is smaller than the buttons.    
             }
+            msgEl.update(text || '&#160;');
             dlg.setSize(w, 'auto').center();
             return this;
         },
@@ -364,7 +372,7 @@ Ext.Msg.show({
                     d.focusEl = db;
                 }
             }
-            if(opt.iconCls){
+            if(Ext.isDefined(opt.iconCls)){
               d.setIconClass(opt.iconCls);
             }
             this.setIcon(Ext.isDefined(opt.icon) ? opt.icon : bufferIcon);

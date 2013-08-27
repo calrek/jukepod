@@ -16,9 +16,8 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage App
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Entry.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -62,7 +61,7 @@ require_once 'Zend/Gdata/App/Extension/Control.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage App
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
@@ -242,15 +241,15 @@ class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
     {
         // Get URI
         $editLink = $this->getEditLink();
-        if (($uri === null) && $editLink != null) {
+        if (is_null($uri) && $editLink != null) {
             $uri = $editLink->getHref();
         }
-
+        
         // Set classname to current class, if not otherwise set
-        if ($className === null) {
+        if (is_null($className)) {
             $className = get_class($this);
         }
-
+        
         // Append ETag, if present (Gdata v2 and above, only) and doesn't
         // conflict with existing headers
         if ($this->_etag != null
@@ -258,7 +257,7 @@ class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
                 && !array_key_exists('If-None-Match', $extraHeaders)) {
             $extraHeaders['If-None-Match'] = $this->_etag;
         }
-
+        
         // If an HTTP 304 status (Not Modified)is returned, then we return
         // null.
         $result = null;
@@ -268,7 +267,7 @@ class Zend_Gdata_App_Entry extends Zend_Gdata_App_FeedEntryParent
             if ($e->getResponse()->getStatus() != '304')
                 throw $e;
         }
-
+        
         return $result;
     }
 

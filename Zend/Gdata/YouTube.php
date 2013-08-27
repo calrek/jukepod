@@ -16,9 +16,8 @@
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage YouTube
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: YouTube.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
@@ -79,7 +78,7 @@ require_once 'Zend/Gdata/YouTube/InboxFeed.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage YouTube
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Gdata_YouTube extends Zend_Gdata_Media
@@ -88,15 +87,19 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
     const AUTH_SERVICE_NAME = 'youtube';
     const CLIENTLOGIN_URL = 'https://www.google.com/youtube/accounts/ClientLogin';
 
-    const STANDARD_TOP_RATED_URI = 'http://gdata.youtube.com/feeds/api/standardfeeds/top_rated';
-    const STANDARD_MOST_VIEWED_URI = 'http://gdata.youtube.com/feeds/api/standardfeeds/most_viewed';
-    const STANDARD_RECENTLY_FEATURED_URI = 'http://gdata.youtube.com/feeds/api/standardfeeds/recently_featured';
-    const STANDARD_WATCH_ON_MOBILE_URI = 'http://gdata.youtube.com/feeds/api/standardfeeds/watch_on_mobile';
+    const STANDARD_TOP_RATED_URI = 'http://gdata.youtube.com/feeds/standardfeeds/top_rated';
+    const STANDARD_MOST_VIEWED_URI = 'http://gdata.youtube.com/feeds/standardfeeds/most_viewed';
+    const STANDARD_RECENTLY_FEATURED_URI = 'http://gdata.youtube.com/feeds/standardfeeds/recently_featured';
+    const STANDARD_WATCH_ON_MOBILE_URI = 'http://gdata.youtube.com/feeds/standardfeeds/watch_on_mobile';
 
-    const STANDARD_TOP_RATED_URI_V2 = 'http://gdata.youtube.com/feeds/api/standardfeeds/top_rated';
-    const STANDARD_MOST_VIEWED_URI_V2 = 'http://gdata.youtube.com/feeds/api/standardfeeds/most_viewed';
-    const STANDARD_RECENTLY_FEATURED_URI_V2 = 'http://gdata.youtube.com/feeds/api/standardfeeds/recently_featured';
-    const STANDARD_WATCH_ON_MOBILE_URI_V2 = 'http://gdata.youtube.com/feeds/api/standardfeeds/watch_on_mobile';
+    const STANDARD_TOP_RATED_URI_V2 =
+        'http://gdata.youtube.com/feeds/api/standardfeeds/top_rated';
+    const STANDARD_MOST_VIEWED_URI_V2 =
+        'http://gdata.youtube.com/feeds/api/standardfeeds/most_viewed';
+    const STANDARD_RECENTLY_FEATURED_URI_V2 =
+        'http://gdata.youtube.com/feeds/api/standardfeeds/recently_featured';
+    const STANDARD_WATCH_ON_MOBILE_URI_V2 =
+        'http://gdata.youtube.com/feeds/api/standardfeeds/watch_on_mobile';
 
     const USER_URI = 'http://gdata.youtube.com/feeds/api/users';
     const VIDEO_URI = 'http://gdata.youtube.com/feeds/api/videos';
@@ -110,22 +113,16 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
     const VIDEO_RATINGS_REL = 'http://gdata.youtube.com/schemas/2007#video.ratings';
     const VIDEO_COMPLAINTS_REL = 'http://gdata.youtube.com/schemas/2007#video.complaints';
     const ACTIVITY_FEED_URI = 'http://gdata.youtube.com/feeds/api/events';
-    const FRIEND_ACTIVITY_FEED_URI = 'http://gdata.youtube.com/feeds/api/users/default/friendsactivity';
-
-    /**
-     * The URI of the in-reply-to schema for comments in reply to
-     * other comments.
-     *
-     * @var string
-     */
-     const IN_REPLY_TO_SCHEME = 'http://gdata.youtube.com/schemas/2007#in-reply-to';
+    const FRIEND_ACTIVITY_FEED_URI =
+        'http://gdata.youtube.com/feeds/api/users/default/friendsactivity';
 
     /**
      * The URI of the inbox feed for the currently authenticated user.
      *
      * @var string
      */
-    const INBOX_FEED_URI = 'http://gdata.youtube.com/feeds/api/users/default/inbox';
+    const INBOX_FEED_URI =
+        'http://gdata.youtube.com/feeds/api/users/default/inbox';
 
     /**
      * The maximum number of users for which activity can be requested for,
@@ -697,7 +694,7 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
             $response = $this->post($videoEntry, $url);
             return self::parseFormUploadTokenResponse($response->getBody());
         } else {
-            require_once 'Zend/Gdata/App/Exception.php';
+            require_once 'Zend/Gdata/App/HttpException.php';
             throw new Zend_Gdata_App_Exception(
                 'Url must be provided as a string URL');
         }
@@ -746,7 +743,7 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
     public function getFriendActivityForCurrentUser()
     {
         if (!$this->isAuthenticated()) {
-            require_once 'Zend/Gdata/App/Exception.php';
+            require_once 'Zend/Gdata/YouTube/App/Exception.php';
             throw new Zend_Gdata_App_Exception('You must be authenticated to ' .
                 'use the getFriendActivityForCurrentUser function in Zend_' .
                 'Gdata_YouTube.');
@@ -759,12 +756,12 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
      * Retrieve a feed of messages in the currently authenticated user's inbox.
      *
      * @throws Zend_Gdata_App_Exception if not logged in.
-     * @return Zend_Gdata_YouTube_InboxFeed|null
+     * @return Zend_Gdata_YouTube_InboxFeed|null 
      */
     public function getInboxFeedForCurrentUser()
     {
         if (!$this->isAuthenticated()) {
-            require_once 'Zend/Gdata/App/Exception.php';
+            require_once 'Zend/Gdata/YouTube/App/Exception.php';
             throw new Zend_Gdata_App_Exception('You must be authenticated to ' .
                 'use the getInboxFeedForCurrentUser function in Zend_' .
                 'Gdata_YouTube.');
@@ -773,13 +770,13 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
         return parent::getFeed(self::INBOX_FEED_URI,
             'Zend_Gdata_YouTube_InboxFeed');
     }
-
+    
     /**
      * Send a video message.
      *
      * Note: Either a Zend_Gdata_YouTube_VideoEntry or a valid video ID must
      * be provided.
-     *
+     * 
      * @param string $body The body of the message
      * @param Zend_Gdata_YouTube_VideoEntry (optional) The video entry to send
      * @param string $videoId The id of the video to send
@@ -801,7 +798,7 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
         }
 
         $messageEntry = new Zend_Gdata_YouTube_InboxEntry();
-
+        
         if ($this->getMajorProtocolVersion() == null ||
             $this->getMajorProtocolVersion() == 1) {
 
@@ -832,36 +829,6 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
         $response = $this->insertEntry($messageEntry, $insertUrl,
             'Zend_Gdata_YouTube_InboxEntry');
         return $response;
-    }
-
-    /**
-     * Post a comment in reply to an existing comment
-     *
-     * @param Zend_Gdata_YouTube_CommentEntry $commentEntry The comment entry
-     *         to reply to
-     * @param string                          $commentText  The text of the
-		 *         comment to post
-     * @return Zend_Gdata_YouTube_CommentEntry the posted comment
-     */
-    public function replyToCommentEntry($commentEntry, $commentText)
-    {
-        $newComment = $this->newCommentEntry();
-        $newComment->content = $this->newContent()->setText($commentText);
-        $commentId = $commentEntry->getId();
-        $commentIdArray = explode(':', $commentId);
-
-        // create a new link element
-        $inReplyToLinkHref = self::VIDEO_URI . '/' . $commentIdArray[3] .
-            '/comments/' . $commentIdArray[5];
-        $inReplyToLink = $this->newLink($inReplyToLinkHref,
-            self::IN_REPLY_TO_SCHEME, $type="application/atom+xml");
-        $links = $newComment->getLink();
-        $links[] = $inReplyToLink;
-        $newComment->setLink($links);
-        $commentFeedPostUrl = self::VIDEO_URI . '/' . $commentIdArray[3] .
-            '/comments';
-        return $this->insertEntry($newComment,
-            $commentFeedPostUrl, 'Zend_Gdata_YouTube_CommentEntry');
     }
 
 }

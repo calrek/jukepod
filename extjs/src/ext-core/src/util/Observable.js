@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 (function(){
 
 var EXTUTIL = Ext.util,
@@ -225,11 +236,11 @@ myGridPanel.on({
         var me = this,
             e,
             oe,
-            isF,
-        ce;
+            ce;
+            
         if (typeof eventName == 'object') {
             o = eventName;
-            for (e in o){
+            for (e in o) {
                 oe = o[e];
                 if (!me.filterOptRe.test(e)) {
                     me.addListener(e, oe.fn || oe, oe.scope || o.scope, oe.fn ? oe : o);
@@ -387,12 +398,16 @@ function createSingle(h, e, fn, scope){
 
 function createDelayed(h, o, l, scope){
     return function(){
-        var task = new EXTUTIL.DelayedTask();
+        var task = new EXTUTIL.DelayedTask(),
+            args = Array.prototype.slice.call(arguments, 0);
         if(!l.tasks) {
             l.tasks = [];
         }
         l.tasks.push(task);
-        task.delay(o.delay || 10, h, scope, Array.prototype.slice.call(arguments, 0));
+        task.delay(o.delay || 10, function(){
+            l.tasks.remove(task);
+            h.apply(scope, args);
+        }, scope);
     };
 };
 
@@ -417,7 +432,8 @@ EXTUTIL.Event.prototype = {
     },
 
     createListener: function(fn, scope, o){
-        o = o || {}, scope = scope || this.obj;
+        o = o || {};
+        scope = scope || this.obj;
         var l = {
             fn: fn,
             scope: scope,

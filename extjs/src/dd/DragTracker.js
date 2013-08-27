@@ -1,18 +1,29 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.dd.DragTracker
  * @extends Ext.util.Observable
  * A DragTracker listens for drag events on an Element and fires events at the start and end of the drag,
- * as well as during the drag. This is useful for components such as {@link Ext.Slider}, where there is
+ * as well as during the drag. This is useful for components such as {@link Ext.slider.MultiSlider}, where there is
  * an element that can be dragged around to change the Slider's value.
  * DragTracker provides a series of template methods that should be overridden to provide functionality
  * in response to detected drag operations. These are onBeforeStart, onStart, onDrag and onEnd.
- * See {@link Ext.Slider}'s initEvents function for an example implementation.
+ * See {@link Ext.slider.MultiSlider}'s initEvents function for an example implementation.
  */
 Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {    
     /**
@@ -56,7 +67,7 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
 	        /**
 	         * @event dragstart
 	         * @param {Object} this
-	         * @param {Object} startXY the page coordinates of the event
+	         * @param {Object} e event object
 	         */
 	        'dragstart',
 	        /**
@@ -89,6 +100,7 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
 
     destroy : function(){
         this.el.un('mousedown', this.onMouseDown, this);
+        delete this.el;
     },
 
     onMouseDown: function(e, target){
@@ -98,19 +110,22 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
             if(this.preventDefault !== false){
                 e.preventDefault();
             }
-            var doc = Ext.getDoc();
-            doc.on('mouseup', this.onMouseUp, this);
-            doc.on('mousemove', this.onMouseMove, this);
-            doc.on('selectstart', this.stopSelect, this);
+            Ext.getDoc().on({
+                scope: this,
+                mouseup: this.onMouseUp,
+                mousemove: this.onMouseMove,
+                selectstart: this.stopSelect
+            });
             if(this.autoStart){
-                this.timer = this.triggerStart.defer(this.autoStart === true ? 1000 : this.autoStart, this);
+                this.timer = this.triggerStart.defer(this.autoStart === true ? 1000 : this.autoStart, this, [e]);
             }
         }
     },
 
     onMouseMove: function(e, target){
-        // HACK: IE hack to see if button was released outside of window. */
-        if(this.active && Ext.isIE && !e.browserEvent.button){
+        // HACK: IE hack to see if button was released outside of window. Resolved in IE9.
+        var ieCheck = Ext.isIE6 || Ext.isIE7 || Ext.isIE8;
+        if(this.active && ieCheck && !e.browserEvent.button){
             e.preventDefault();
             this.onMouseUp(e);
             return;
@@ -121,7 +136,7 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
         this.lastXY = xy;
         if(!this.active){
             if(Math.abs(s[0]-xy[0]) > this.tolerance || Math.abs(s[1]-xy[1]) > this.tolerance){
-                this.triggerStart();
+                this.triggerStart(e);
             }else{
                 return;
             }
@@ -132,13 +147,14 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
     },
 
     onMouseUp: function(e) {
-        var doc = Ext.getDoc();
+        var doc = Ext.getDoc(),
+            wasActive = this.active;
+            
         doc.un('mousemove', this.onMouseMove, this);
         doc.un('mouseup', this.onMouseUp, this);
         doc.un('selectstart', this.stopSelect, this);
         e.preventDefault();
         this.clearStart();
-        var wasActive = this.active;
         this.active = false;
         delete this.elRegion;
         this.fireEvent('mouseup', this, e);
@@ -148,11 +164,11 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
         }
     },
 
-    triggerStart: function(isTimer) {
+    triggerStart: function(e) {
         this.clearStart();
         this.active = true;
-        this.onStart(this.startXY);
-        this.fireEvent('dragstart', this, this.startXY);
+        this.onStart(e);
+        this.fireEvent('dragstart', this, e);
     },
 
     clearStart : function() {
@@ -179,7 +195,7 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
     /**
      * Template method which should be overridden by each DragTracker instance. Called when a drag operation starts
      * (e.g. the user has moved the tracked element beyond the specified tolerance)
-     * @param {Array} xy x and y co-ordinates of the original location of the tracked element
+     * @param {Ext.EventObject} e The event object
      */
     onStart : function(xy) {
 
@@ -220,8 +236,8 @@ Ext.dd.DragTracker = Ext.extend(Ext.util.Observable,  {
     },
 
     getOffset : function(constrain){
-        var xy = this.getXY(constrain);
-        var s = this.startXY;
+        var xy = this.getXY(constrain),
+            s = this.startXY;
         return [s[0]-xy[0], s[1]-xy[1]];
     },
 

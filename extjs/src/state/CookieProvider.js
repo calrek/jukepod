@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 
 /**
  * @class Ext.state.CookieProvider
@@ -29,17 +40,18 @@
  * Create a new CookieProvider
  * @param {Object} config The configuration object
  */
-Ext.state.CookieProvider = function(config){
-    Ext.state.CookieProvider.superclass.constructor.call(this);
-    this.path = "/";
-    this.expires = new Date(new Date().getTime()+(1000*60*60*24*7)); //7 days
-    this.domain = null;
-    this.secure = false;
-    Ext.apply(this, config);
-    this.state = this.readCookies();
-};
-
-Ext.extend(Ext.state.CookieProvider, Ext.state.Provider, {
+Ext.state.CookieProvider = Ext.extend(Ext.state.Provider, {
+    
+    constructor : function(config){
+        Ext.state.CookieProvider.superclass.constructor.call(this);
+        this.path = "/";
+        this.expires = new Date(new Date().getTime()+(1000*60*60*24*7)); //7 days
+        this.domain = null;
+        this.secure = false;
+        Ext.apply(this, config);
+        this.state = this.readCookies();
+    },
+    
     // private
     set : function(name, value){
         if(typeof value == "undefined" || value === null){
@@ -58,13 +70,15 @@ Ext.extend(Ext.state.CookieProvider, Ext.state.Provider, {
 
     // private
     readCookies : function(){
-        var cookies = {};
-        var c = document.cookie + ";";
-        var re = /\s?(.*?)=(.*?);/g;
-    	var matches;
+        var cookies = {},
+            c = document.cookie + ";",
+            re = /\s?(.*?)=(.*?);/g,
+    	    matches,
+            name,
+            value;
     	while((matches = re.exec(c)) != null){
-            var name = matches[1];
-            var value = matches[2];
+            name = matches[1];
+            value = matches[2];
             if(name && name.substring(0,3) == "ys-"){
                 cookies[name.substr(3)] = this.decodeValue(value);
             }

@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.menu.Menu
  * @extends Ext.Container
@@ -294,7 +305,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
         var items = this.items;
         for(var i = start, len = items.length; i >= 0 && i < len; i+= step){
             var item = items.get(i);
-            if(!item.disabled && (item.canActivate || item.isFormField)){
+            if(item.isVisible() && !item.disabled && (item.canActivate || item.isFormField)){
                 this.setActiveItem(item, false);
                 return item;
             }
@@ -398,7 +409,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
             this.el.setXY(xy);
             this.el.show();
             Ext.menu.Menu.superclass.onShow.call(this);
-            if(Ext.isIE){
+            if(Ext.isIE9m){
                 // internal event, used so we don't couple the layout to the menu
                 this.fireEvent('autosize', this);
                 if(!Ext.isIE8){
@@ -549,8 +560,8 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
          return c;
     },
 
-    applyDefaults : function(c){
-        if(!Ext.isString(c)){
+    applyDefaults : function(c) {
+        if (!Ext.isString(c)) {
             c = Ext.menu.Menu.superclass.applyDefaults.call(this, c);
             var d = this.internalDefaults;
             if(d){
@@ -566,10 +577,12 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
     },
 
     // private
-    getMenuItem : function(config){
-       if(!config.isXType){
-            if(!config.xtype && Ext.isBoolean(config.checked)){
-                return new Ext.menu.CheckItem(config)
+    getMenuItem : function(config) {
+        config.ownerCt = this;
+        
+        if (!config.isXType) {
+            if (!config.xtype && Ext.isBoolean(config.checked)) {
+                return new Ext.menu.CheckItem(config);
             }
             return Ext.create(config, this.defaultType);
         }
@@ -580,7 +593,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
      * Adds a separator bar to the menu
      * @return {Ext.menu.Item} The menu item that was added
      */
-    addSeparator : function(){
+    addSeparator : function() {
         return this.add(new Ext.menu.Separator());
     },
 
@@ -589,7 +602,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
      * @param {Mixed} el The element or DOM node to add, or its id
      * @return {Ext.menu.Item} The menu item that was added
      */
-    addElement : function(el){
+    addElement : function(el) {
         return this.add(new Ext.menu.BaseItem({
             el: el
         }));
@@ -600,7 +613,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
      * @param {Ext.menu.Item} item The menu item to add
      * @return {Ext.menu.Item} The menu item that was added
      */
-    addItem : function(item){
+    addItem : function(item) {
         return this.add(item);
     },
 
@@ -609,7 +622,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
      * @param {Object} config A MenuItem config object
      * @return {Ext.menu.Item} The menu item that was added
      */
-    addMenuItem : function(config){
+    addMenuItem : function(config) {
         return this.add(this.getMenuItem(config));
     },
 

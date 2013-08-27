@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /*
  * Italian translation
  * By eric_void
@@ -109,16 +120,16 @@ if(Ext.DatePicker){
       maxText           : "Data successiva alla data massima",
       disabledDaysText  : "",
       disabledDatesText : "",
-      monthNames		: Date.monthNames,
-      dayNames			: Date.dayNames,
+      monthNames        : Date.monthNames,
+      dayNames          : Date.dayNames,
       nextText          : 'Mese successivo (Ctrl+Destra)',
       prevText          : 'Mese precedente (Ctrl+Sinistra)',
       monthYearText     : 'Scegli un mese (Ctrl+Su/Giu per cambiare anno)',
       todayTip          : "{0} (Barra spaziatrice)",
       format            : "d/m/y",
-      cancelText		: "Annulla",
-	  okText            : "&#160;OK&#160;",
-	  startDay          : 1
+      cancelText        : "Annulla",
+      okText            : "&#160;OK&#160;",
+      startDay          : 1
    });
 }
 
@@ -148,6 +159,8 @@ if(Ext.form.TextField){
 
 if(Ext.form.NumberField){
    Ext.apply(Ext.form.NumberField.prototype, {
+      decimalSeparator : ",",
+      decimalPrecision : 2,
       minText : "Il valore minimo \u00E8 {0}",
       maxText : "Il valore massimo \u00E8 {0}",
       nanText : "{0} non \u00E8 un valore numerico corretto"
@@ -162,7 +175,8 @@ if(Ext.form.DateField){
       maxText           : "La data deve essere precedente al {0}",
       invalidText       : "{0} non \u00E8 una data valida. Deve essere nel formato {1}",
       format            : "d/m/y",
-      altFormats        : "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
+      altFormats        : "d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d",
+      startDay          : 1
    });
 }
 

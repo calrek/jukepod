@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 (function(){
     var BEFOREREQUEST = "beforerequest",
         REQUESTCOMPLETE = "requestcomplete",
@@ -43,6 +54,7 @@
      * <p>Be aware that file upload packets are sent with the content type <a href="http://www.faqs.org/rfcs/rfc2388.html">multipart/form</a>
      * and some server technologies (notably JEE) may require some custom processing in order to
      * retrieve parameter names and parameter values from the packet content.</p>
+     * <p>Also note that it's not possible to check the response code of the hidden iframe, so the success handler will ALWAYS fire.</p>
      * @constructor
      * @param {Object} config a configuration object.
      */
@@ -243,7 +255,7 @@ Ext.Ajax.request({
                           failure: me.handleFailure,
                           scope: me,
                           argument: {options: o},
-                          timeout : o.timeout || me.timeout
+                          timeout : Ext.num(o.timeout, me.timeout)
                     },
                     form,
                     serForm;
@@ -261,7 +273,7 @@ Ext.Ajax.request({
 
                 if((form = Ext.getDom(o.form))){
                     url = url || form.action;
-                     if(o.isUpload || /multipart\/form-data/i.test(form.getAttribute("enctype"))) {
+                     if(o.isUpload || (/multipart\/form-data/i.test(form.getAttribute("enctype")))) {
                          return me.doFormUpload.call(me, o, p, url);
                      }
                     serForm = Ext.lib.Ajax.serializeForm(form);
@@ -275,7 +287,7 @@ Ext.Ajax.request({
                     url = Ext.urlAppend(url, dcp + '=' + (new Date().getTime()));
                 }
 
-                o.headers = Ext.apply(o.headers || {}, me.defaultHeaders || {});
+                o.headers = Ext.applyIf(o.headers || {}, me.defaultHeaders || {});
 
                 if(o.autoAbort === true || me.autoAbort) {
                     me.abort();

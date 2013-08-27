@@ -1,4 +1,4 @@
-<?php
+<?php 
 $lang = array();
 
 $lang["no_albums_found"] = "keine Alben gefunden";
@@ -192,7 +192,7 @@ $lang["user"] = "User";
 $lang["password"] = "Passwort";
 $lang["username"] = "Username";
 $lang["login"] = "Login";
-$lang["title_login"] = "MyWebJukebox-Login";
+$lang["title_login"] = "Jukepod-Login";
 $lang["login_fail"] = "Login fehlgeschlagen";
 $lang["hello"] = "Hallo";
 $lang["logout"] = "Logout";

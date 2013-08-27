@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.TabPanel
  * <p>A basic tab container. TabPanels can be used exactly like a standard {@link Ext.Panel}
@@ -666,6 +677,7 @@ new Ext.TabPanel({
         var el = this.getTabEl(item);
         if(el){
             Ext.fly(el).child('span.x-tab-strip-text', true).innerHTML = item.title;
+            this.delegateUpdates();
         }
     },
 
@@ -676,6 +688,7 @@ new Ext.TabPanel({
             el = Ext.get(el);
             el.child('span.x-tab-strip-text').replaceClass(oldCls, iconCls);
             el[Ext.isEmpty(iconCls) ? 'removeClass' : 'addClass']('x-tab-with-icon');
+            this.delegateUpdates();
         }
     },
 
@@ -740,13 +753,14 @@ new Ext.TabPanel({
 
     // private
     delegateUpdates : function(){
+        var rendered = this.rendered;
         if(this.suspendUpdates){
             return;
         }
-        if(this.resizeTabs && this.rendered){
+        if(this.resizeTabs && rendered){
             this.autoSizeTabs();
         }
-        if(this.enableTabScroll && this.rendered){
+        if(this.enableTabScroll && rendered){
             this.autoScrollTabs();
         }
     },
@@ -821,6 +835,8 @@ new Ext.TabPanel({
                 this.stack.add(item);
 
                 this.layout.setActiveItem(item);
+                // Need to do this here, since setting the active tab slightly changes the size
+                this.delegateUpdates();
                 if(this.scrolling){
                     this.scrollToTab(item, this.animScroll);
                 }
@@ -860,10 +876,11 @@ new Ext.TabPanel({
             pos = this.getScrollPos(),
             l = this.edge.getOffsetsTo(this.stripWrap)[0] + pos;
 
-        if(!this.enableTabScroll || count < 1 || cw < 20){ // 20 to prevent display:none issues
+        if(!this.enableTabScroll || cw < 20){ // 20 to prevent display:none issues
             return;
         }
-        if(l <= tw){
+        if(count == 0 || l <= tw){
+            // ensure the width is set if there's no tabs
             wd.scrollLeft = 0;
             wrap.setWidth(tw);
             if(this.scrolling){

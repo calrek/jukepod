@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.form.HtmlEditor
  * @extends Ext.form.Field
@@ -174,6 +185,7 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
              */
             'editmodechange'
         );
+        Ext.form.HtmlEditor.superclass.initComponent.call(this);
     },
 
     // private
@@ -452,6 +464,7 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
         iframe.name = Ext.id();
         iframe.frameBorder = '0';
         iframe.style.overflow = 'auto';
+        iframe.src = Ext.SSL_SECURE_URL;
 
         this.wrap.dom.appendChild(iframe);
         this.iframe = iframe;
@@ -472,11 +485,11 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
         doc.write(this.getDocMarkup());
         doc.close();
 
-        var task = { // must defer to wait for browser to be ready
+        this.readyTask = { // must defer to wait for browser to be ready
             run : function(){
                 var doc = this.getDoc();
                 if(doc.body || doc.readyState == 'complete'){
-                    Ext.TaskMgr.stop(task);
+                    Ext.TaskMgr.stop(this.readyTask);
                     this.setDesignMode(true);
                     this.initEditor.defer(10, this);
                 }
@@ -485,7 +498,7 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
             duration:10000,
             scope: this
         };
-        Ext.TaskMgr.start(task);
+        Ext.TaskMgr.start(this.readyTask);
     },
 
 
@@ -505,8 +518,8 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
      * set current design mode. To enable, mode can be true or 'on', off otherwise
      */
     setDesignMode : function(mode){
-        var doc ;
-        if(doc = this.getDoc()){
+        var doc = this.getDoc();
+        if (doc) {
             if(this.readOnly){
                 mode = false;
             }
@@ -562,8 +575,7 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
      */
     toggleSourceEdit : function(sourceEditMode){
         var iframeHeight,
-            elHeight,
-            ls;
+            elHeight;
 
         if (sourceEditMode === undefined) {
             sourceEditMode = !this.sourceEditMode;
@@ -579,7 +591,7 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
         }
         if (this.sourceEditMode) {
             // grab the height of the containing panel before we hide the iframe
-            ls = this.getSize();
+            this.previousSize = this.getSize();
 
             iframeHeight = Ext.get(this.iframe).getHeight();
 
@@ -602,7 +614,8 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
             this.el.dom.setAttribute('tabIndex', -1);
             this.deferFocus();
 
-            this.setSize(ls);
+            this.setSize(this.previousSize);
+            delete this.previousSize;
             this.iframe.style.height = elHeight + 'px';
         }
         this.fireEvent('editmodechange', this, this.sourceEditMode);
@@ -781,13 +794,17 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
     },
 
     // private
-    onDestroy : function(){
+    beforeDestroy : function(){
         if(this.monitorTask){
             Ext.TaskMgr.stop(this.monitorTask);
+        }
+        if(this.readyTask){
+            Ext.TaskMgr.stop(this.readyTask);
         }
         if(this.rendered){
             Ext.destroy(this.tb);
             var doc = this.getDoc();
+            Ext.EventManager.removeFromSpecialCache(doc);
             if(doc){
                 try{
                     Ext.EventManager.removeAll(doc);
@@ -801,12 +818,7 @@ Ext.form.HtmlEditor = Ext.extend(Ext.form.Field, {
                 this.wrap.remove();
             }
         }
-
-        if(this.el){
-            this.el.removeAllListeners();
-            this.el.remove();
-        }
-        this.purgeListeners();
+        Ext.form.HtmlEditor.superclass.beforeDestroy.call(this);
     },
 
     // private

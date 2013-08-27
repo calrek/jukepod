@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 Ext.debug = {};
 
 (function(){
@@ -464,7 +475,7 @@ Ext.debug.ComponentInspector = Ext.extend(Ext.tree.TreePanel, {
                 if (c.id != this.id && c.id != this.bottomToolbar.id) {
                     var newNode = this.createNode(n,c);
                     if (!newNode.leaf) {
-                        this.parseChildItems(newNode)
+                        this.parseChildItems(newNode);
                     }
                 }
             }
@@ -499,7 +510,7 @@ Ext.debug.ComponentInspector = Ext.extend(Ext.tree.TreePanel, {
         this.parseRootNode();
         var ci = Ext.getCmp('x-debug-compinfo');
         if (ci) {
-            ci.message('refreshed component tree - '+Ext.ComponentMgr.all.length)
+            ci.message('refreshed component tree - '+Ext.ComponentMgr.all.length);
         }
     }
 });

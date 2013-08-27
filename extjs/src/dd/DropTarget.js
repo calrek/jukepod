@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.dd.DropTarget
  * @extends Ext.dd.DDTarget
@@ -13,21 +24,21 @@
  * @param {Mixed} el The container element
  * @param {Object} config
  */
-Ext.dd.DropTarget = function(el, config){
-    this.el = Ext.get(el);
+Ext.dd.DropTarget = Ext.extend(Ext.dd.DDTarget, {
     
-    Ext.apply(this, config);
+    constructor : function(el, config){
+        this.el = Ext.get(el);
     
-    if(this.containerScroll){
-        Ext.dd.ScrollManager.register(this.el);
-    }
+        Ext.apply(this, config);
     
-    Ext.dd.DropTarget.superclass.constructor.call(this, this.el.dom, this.ddGroup || this.group, 
-          {isTarget: true});
-
-};
-
-Ext.extend(Ext.dd.DropTarget, Ext.dd.DDTarget, {
+        if(this.containerScroll){
+            Ext.dd.ScrollManager.register(this.el);
+        }
+    
+        Ext.dd.DropTarget.superclass.constructor.call(this, this.el.dom, this.ddGroup || this.group, 
+              {isTarget: true});        
+    },
+    
     /**
      * @cfg {String} ddGroup
      * A named drag drop group to which this object belongs.  If a group is specified, then this object will only
@@ -111,5 +122,12 @@ Ext.extend(Ext.dd.DropTarget, Ext.dd.DDTarget, {
      */
     notifyDrop : function(dd, e, data){
         return false;
+    },
+    
+    destroy : function(){
+        Ext.dd.DropTarget.superclass.destroy.call(this);
+        if(this.containerScroll){
+            Ext.dd.ScrollManager.unregister(this.el);
+        }
     }
 });

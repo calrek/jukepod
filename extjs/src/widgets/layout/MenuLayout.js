@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.layout.MenuLayout
  * @extends Ext.layout.ContainerLayout
@@ -27,7 +38,7 @@
             this.itemTpl = Ext.layout.MenuLayout.prototype.itemTpl = new Ext.XTemplate(
                 '<li id="{itemId}" class="{itemCls}">',
                     '<tpl if="needsIcon">',
-                        '<img src="{icon}" class="{iconCls}"/>',
+                        '<img alt="{altText}" src="{icon}" class="{iconCls}"/>',
                     '</tpl>',
                 '</li>'
             );
@@ -52,7 +63,7 @@
             if (!a.isMenuItem && a.needsIcon) {
                 c.positionEl.addClass('x-menu-list-item-indent');
             }
-            this.configureItem(c, position);
+            this.configureItem(c);
         }else if(c && !this.isValidParent(c, target)){
             if(Ext.isNumber(position)){
                 position = target.dom.childNodes[position];
@@ -62,14 +73,17 @@
     },
 
     getItemArgs : function(c) {
-        var isMenuItem = c instanceof Ext.menu.Item;
+        var isMenuItem = c instanceof Ext.menu.Item,
+            canHaveIcon = !(isMenuItem || c instanceof Ext.menu.Separator);
+
         return {
             isMenuItem: isMenuItem,
-            needsIcon: !isMenuItem && (c.icon || c.iconCls),
+            needsIcon: canHaveIcon && (c.icon || c.iconCls),
             icon: c.icon || Ext.BLANK_IMAGE_URL,
             iconCls: 'x-menu-item-icon ' + (c.iconCls || ''),
             itemId: 'x-menu-el-' + c.id,
-            itemCls: 'x-menu-list-item '
+            itemCls: 'x-menu-list-item ',
+            altText: c.altText || ''
         };
     },
 
@@ -88,8 +102,8 @@
         if(ct.floating){
             if(w){
                 ct.setWidth(w);
-            }else if(Ext.isIE){
-                ct.setWidth(Ext.isStrict && (Ext.isIE7 || Ext.isIE8) ? 'auto' : ct.minWidth);
+            }else if(Ext.isIE9m){
+                ct.setWidth(Ext.isStrict && (Ext.isIE7 || Ext.isIE8 || Ext.isIE9) ? 'auto' : ct.minWidth);
                 var el = ct.getEl(), t = el.dom.offsetWidth; // force recalc
                 ct.setWidth(ct.getLayoutTarget().getWidth() + el.getFrameWidth('lr'));
             }

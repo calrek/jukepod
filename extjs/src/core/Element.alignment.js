@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.Element
  */
@@ -58,7 +69,7 @@ Ext.Element.addMethods({
      * @param {Boolean/Object} animate (optional) True for the default animation or a standard Element animation config object
      * @param {Boolean/Number} monitorScroll (optional) True to monitor body scroll and reposition. If this parameter
      * is a number, it is used as the buffer delay (defaults to 50ms).
-     * @param {Function} callback The function to call after the animation finishes
+     * @param {Function} callback (optional) The function to call after the animation finishes
      * @return {Ext.Element} this
      */
     anchorTo : function(el, alignment, offsets, animate, monitorScroll, callback){        
@@ -137,7 +148,7 @@ Ext.Element.addMethods({
         }
         
         o = o || [0,0];
-        p = (!p || p == "?" ? "tl-bl?" : (!/-/.test(p) && p !== "" ? "tl-" + p : p || "tl-bl")).toLowerCase();       
+        p = (!p || p == "?" ? "tl-bl?" : (!(/-/).test(p) && p !== "" ? "tl-" + p : p || "tl-bl")).toLowerCase();       
                 
         var me = this,
         	d = me.dom,
@@ -306,12 +317,13 @@ el.alignTo("other-el", "c-bl", [-6, 0]);
             vw -= offsets.right;
             vh -= offsets.bottom;
 
-            var vr = vx+vw;
-            var vb = vy+vh;
-
-            var xy = proposedXY || (!local ? this.getXY() : [this.getLeft(true), this.getTop(true)]);
-            var x = xy[0], y = xy[1];
-            var w = this.dom.offsetWidth, h = this.dom.offsetHeight;
+            var vr = vx + vw,
+                vb = vy + vh,
+                xy = proposedXY || (!local ? this.getXY() : [this.getLeft(true), this.getTop(true)]),
+                x = xy[0], y = xy[1],
+                offset = this.getConstrainOffset(),
+                w = this.dom.offsetWidth + offset, 
+                h = this.dom.offsetHeight + offset;
 
             // only move it if it needs it
             var moved = false;
@@ -392,6 +404,11 @@ el.alignTo("other-el", "c-bl", [-6, 0]);
 //         }
 //         return moved ? [x, y] : false;
 //    },
+
+    // private, used internally
+    getConstrainOffset : function(){
+        return 0;
+    },
     
     /**
     * Calculates the x, y to center this element on the screen

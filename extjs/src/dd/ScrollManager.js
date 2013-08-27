@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.dd.ScrollManager
  * <p>Provides automatic scrolling of overflow regions in the page during drag operations.</p>
@@ -64,14 +75,19 @@ Ext.dd.ScrollManager = function(){
         proc.el = null;
         proc.dir = "";
     };
-    
+
     var startProc = function(el, dir){
         clearProc();
         proc.el = el;
         proc.dir = dir;
-        var freq = (el.ddScrollConfig && el.ddScrollConfig.frequency) ? 
-                el.ddScrollConfig.frequency : Ext.dd.ScrollManager.frequency;
-        proc.id = setInterval(doScroll, freq);
+        var group = el.ddScrollConfig ? el.ddScrollConfig.ddGroup : undefined,
+            freq  = (el.ddScrollConfig && el.ddScrollConfig.frequency)
+                  ? el.ddScrollConfig.frequency
+                  : Ext.dd.ScrollManager.frequency;
+
+        if (group === undefined || ddm.dragCurrent.ddGroup == group) {
+            proc.id = setInterval(doScroll, freq);
+        }
     };
     
     var onFire = function(e, isDrop){
@@ -163,7 +179,7 @@ Ext.dd.ScrollManager = function(){
         hthresh : 25,
 
         /**
-         * The number of pixels to scroll in each scroll increment (defaults to 50)
+         * The number of pixels to scroll in each scroll increment (defaults to 100)
          * @type Number
          */
         increment : 100,
@@ -186,6 +202,13 @@ Ext.dd.ScrollManager = function(){
          * @type Number
          */
         animDuration: .4,
+        
+        /**
+         * The named drag drop {@link Ext.dd.DragSource#ddGroup group} to which this container belongs (defaults to undefined). 
+         * If a ddGroup is specified, then container scrolling will only occur when a dragged object is in the same ddGroup.
+         * @type String
+         */
+        ddGroup: undefined,
         
         /**
          * Manually trigger a cache refresh.

@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.data.DataProxy
  * @extends Ext.util.Observable
@@ -53,7 +64,7 @@ Ext.data.DataProxy.on('write', function(proxy, action, data, res, rs) {
 });
 
 // Listen to "exception" event fired by all proxies
-Ext.data.DataProxy.on('exception', function(proxy, type, action) {
+Ext.data.DataProxy.on('exception', function(proxy, type, action, exception) {
     console.error(type + action + ' exception);
 });
  * </code></pre>
@@ -152,7 +163,7 @@ myStore.on({
          * so any Store instance may observe this event.</p>
          * <p>In addition to being fired through the DataProxy instance that raised the event, this event is also fired
          * through the Ext.data.DataProxy <i>class</i> to allow for centralized processing of exception events from <b>all</b>
-         * DataProxies by attaching a listener to the Ext.data.Proxy class itself.</p>
+         * DataProxies by attaching a listener to the Ext.data.DataProxy class itself.</p>
          * <p>This event can be fired for one of two reasons:</p>
          * <div class="mdetail-params"><ul>
          * <li>remote-request <b>failed</b> : <div class="sub-desc">
@@ -240,7 +251,7 @@ myStore.on({
          * <p>Fires before a request is generated for one of the actions Ext.data.Api.actions.create|update|destroy</p>
          * <p>In addition to being fired through the DataProxy instance that raised the event, this event is also fired
          * through the Ext.data.DataProxy <i>class</i> to allow for centralized processing of beforewrite events from <b>all</b>
-         * DataProxies by attaching a listener to the Ext.data.Proxy class itself.</p>
+         * DataProxies by attaching a listener to the Ext.data.DataProxy class itself.</p>
          * @param {DataProxy} this The proxy for the request
          * @param {String} action [Ext.data.Api.actions.create|update|destroy]
          * @param {Record/Record[]} rs The Record(s) to create|update|destroy.
@@ -252,7 +263,7 @@ myStore.on({
          * <p>Fires before the request-callback is called</p>
          * <p>In addition to being fired through the DataProxy instance that raised the event, this event is also fired
          * through the Ext.data.DataProxy <i>class</i> to allow for centralized processing of write events from <b>all</b>
-         * DataProxies by attaching a listener to the Ext.data.Proxy class itself.</p>
+         * DataProxies by attaching a listener to the Ext.data.DataProxy class itself.</p>
          * @param {DataProxy} this The proxy that sent the request
          * @param {String} action [Ext.data.Api.actions.create|upate|destroy]
          * @param {Object} data The data object extracted from the server-response
@@ -358,7 +369,7 @@ proxy.setApi(Ext.data.Api.actions.read, '/users/new_load_url');
      * request.  If all API-actions are routed to unique urls, the xaction parameter is unecessary.  However, if no api is defined
      * and all Proxy actions are routed to DataProxy#url, the server-side will require the xaction parameter to perform a switch to
      * the corresponding code for CRUD action.
-     * @param {String [Ext.data.Api.CREATE|READ|UPDATE|DESTROY]} action
+     * @param {String} action CREATE READ UPDATE or DESTROY
      * @return {Boolean}
      */
     isApiAction : function(action) {

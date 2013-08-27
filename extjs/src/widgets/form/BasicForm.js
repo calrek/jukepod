@@ -1,9 +1,20 @@
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
 /**
  * @class Ext.form.BasicForm
  * @extends Ext.util.Observable
@@ -475,11 +486,22 @@ myFormPanel.getForm().submit({
      */
     updateRecord : function(record){
         record.beginEdit();
-        var fs = record.fields;
+        var fs = record.fields,
+            field,
+            value;
         fs.each(function(f){
-            var field = this.findField(f.name);
+            field = this.findField(f.name);
             if(field){
-                record.set(f.name, field.getValue());
+                value = field.getValue();
+                if (Ext.type(value) !== false && value.getGroupValue) {
+                    value = value.getGroupValue();
+                } else if ( field.eachItem ) {
+                    value = [];
+                    field.eachItem(function(item){
+                        value.push(item.getValue());
+                    });
+                }
+                record.set(f.name, value);
             }
         }, this);
         record.endEdit();
@@ -561,8 +583,10 @@ myFormPanel.getForm().submit({
                     if (f.dataIndex == id || f.id == id || f.getName() == id) {
                         field = f;
                         return false;
-                    } else if (f.isComposite && f.rendered) {
+                    } else if (f.isComposite) {
                         return f.items.each(findMatchingField);
+                    } else if (f instanceof Ext.form.CheckboxGroup && f.rendered) {
+                        return f.eachItem(findMatchingField);
                     }
                 }
             };
@@ -668,7 +692,7 @@ myFormPanel.getForm().submit({
             key,
             val;
         this.items.each(function(f) {
-            if (dirtyOnly !== true || f.isDirty()) {
+            if (!f.disabled && (dirtyOnly !== true || f.isDirty())) {
                 n = f.getName();
                 key = o[n];
                 val = f.getValue();
